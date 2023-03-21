@@ -1,0 +1,64 @@
+@mixin center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin center-flex-box {
+  @include center;
+  justify-content: center;
+}
+
+@mixin center-space-between {
+  @include center;
+  justify-content: space-between;
+}
+
+@mixin center-space-evenly {
+  @include center;
+  justify-content: space-evenly;
+}
+
+@mixin center-space-around {
+  @include center;
+  justify-content: space-around;
+}
+
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin center-grid {
+  display: grid;
+  place-items: center;
+}
+
+@mixin breakpoint($point) {
+  @if $point == large-desktop {
+    @media only screen and (min-width: 1441px) {
+      @content;
+    }
+  } @else if $point == desktop {
+    @media only screen and (max-width: 1440px) {
+      @content;
+    }
+  } @else if $point == lap-top {
+    @media only screen and (min-width: 1025px) and (max-width: 1441px) {
+      @content;
+    }
+  } @else if $point == tablet {
+    @media only screen and (min-width: 769px) and (max-width: 1024px) {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media only screen and (min-width: 481px) and (max-width: 768px) {
+      @content;
+    }
+  } @else if $point == small-mobile {
+    @media only screen and (min-width: 320px) and (max-width: 480px) {
+      @content;
+    }
+  }
+}
