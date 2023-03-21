@@ -1,0 +1,14 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+  
+    @include breakpoint(large-desktop) {
+      padding: 0;
+    }
+  
+    @include breakpoint(790) {
+      padding: 0 9px;
+    }
+  }
+  
