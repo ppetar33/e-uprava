@@ -1,0 +1,130 @@
+.nav {
+  width: 100%;
+}
+
+.nav__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav__wrapper {
+  width: 100%;
+}
+
+.nav__list {
+  display: flex;
+  padding-left: 15px;
+}
+
+.nav__items,
+.nav__actions {
+  display: flex;
+}
+
+.nav__list-item {
+  padding: 7px;
+  margin-top: 9px;
+  cursor: pointer;
+  color: rgb(56, 56, 56);
+  transition: 0.2s all ease-in-out;
+  font-size: 15px;
+  display: flex;
+  letter-spacing: 2px;
+
+  position: relative;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nav__container {
+  display: flex;
+}
+
+.active {
+  color: rgb(46, 30, 30);
+  font-weight: bold;
+}
+
+.nav__login-btn {
+  border: 1px solid white;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: rgb(56, 56, 56);
+  transition: 0.2s all ease-in-out;
+  font-size: 13px;
+  display: flex;
+  letter-spacing: 2px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.nav__login-btn:hover {
+  transition: 0.2s all ease-in-out;
+  color: rgb(56, 56, 56);
+}
+
+.draw {
+  transition: color 0.25s;
+
+  &::before,
+  &::after {
+    border: 2px solid transparent;
+    width: 0;
+    height: 0;
+  }
+
+  &::before {
+    top: 0;
+    left: 0;
+  }
+
+  &::after {
+    bottom: 0;
+    right: 0;
+  }
+
+  &:hover::before,
+  &:hover::after {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover::before {
+    border-top-color: rgb(56, 56, 56);
+    border-right-color: rgb(56, 56, 56);
+    transition: width 0.25s ease-out, height 0.25s ease-out 0.25s;
+  }
+
+  &:hover::after {
+    border-bottom-color: rgb(56, 56, 56);
+    border-left-color: rgb(56, 56, 56);
+    transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s,
+      height 0.25s ease-out 0.75s;
+  }
+}
+
+.meet {
+  &::after {
+    top: 0;
+    left: 0;
+  }
+
+  &:hover::before {
+    border-top-color: rgb(56, 56, 56);
+    border-right-color: rgb(56, 56, 56);
+  }
+
+  &:hover::after {
+    border-bottom-color: rgb(56, 56, 56);
+    border-left-color: rgb(56, 56, 56);
+    transition: height 0.25s ease-out, width 0.25s ease-out 0.25s;
+  }
+}
