@@ -1,1 +1,52 @@
-<p>register works!</p>
+<ng-container>
+    <div class="register" [ngClass]="{ 'disabled' : isLoading }">
+        <div class="register__wrapper">
+            <div class="register__container">
+                <div class="register__title-wrapper">
+                    <h1 class="register__title" mat-dialog-title>Registration</h1>
+                    <i class="bi bi-x" (click)="closeDialog()"></i>
+                </div>
+                <div class="register__form">
+                    <form class="register__body" [formGroup]="userForm">
+                        <mat-form-field appearance="fill">
+                            <mat-label>First Name</mat-label>
+                            <input class="login__input" type="text" matInput formControlName="name" placeholder="First name needs to be provided">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Last Name</mat-label>
+                            <input class="login__input" type="text" matInput formControlName="lastName" placeholder="Last name needs to be provided">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input class="login__input" type="email" matInput formControlName="email" placeholder="Email needs to be like example@domain">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>JMBG</mat-label>
+                            <input class="login__input" type="number" matInput formControlName="jmbg" placeholder="JMBG needs to be provided">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Password</mat-label>
+                            <input class="login__input" type="password" matInput formControlName="password" placeholder="Upper and lower letter, number, special character">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Repeat Password</mat-label>
+                            <input class="login__input" type="password" matInput formControlName="passwordRepeated" placeholder="Password needs to match">
+                        </mat-form-field>
+                    </form> 
+                </div>
+                <div class="login__register-wrapper">
+                    <a class="login__register" (click)="openLogin()">Have an account? Login</a>
+                </div>
+                <div class="register__actions">
+                    <button class="register__btn" mat-button type="button" (click)="submitForm()" [ngClass]="{ 'disabled-btn' : !userForm.valid }">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spinner-wrapper" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <app-toast-bar [message]="errorMessage" [status]="'failure'" [duration]="1" *ngIf="errorMessage"></app-toast-bar>
+</ng-container>
