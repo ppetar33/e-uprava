@@ -1,0 +1,71 @@
+version: '2.1'
+services:
+  auth-microservice:
+    image: auth-microservice
+    container_name: auth-microservice
+    build:
+      context: .
+      dockerfile: ./auth_microservice/Dockerfile
+    restart: always
+    environment:
+      -AUTH-MICROSERVICE-PORT: ${AUTH_MICROSERVICE_PORT}
+      -AUTH-DB-PORT: ${AUTH_DB_PORT}
+    depends_on:
+      - auth-db
+    networks:
+      - network
+
+  auth-db:
+    image: mongo
+    container_name: auth-db
+    restart: on-failure
+    volumes:
+      - /Users/ad/Desktop/authdata/data:/data
+    networks:
+      - network
+
+  court-microservice:
+    image: court-microservice
+    container_name: court-microservice
+    build:
+      context: .
+      dockerfile: ./court_microservice/Dockerfile
+    restart: always
+    environment:
+      -COURT_MICROSERVICE_PORT: ${COURT_MICROSERVICE_PORT}
+      -COURT_DB_PORT: ${COURT_DB_PORT}
+    depends_on:
+      - court-db
+    networks:
+      - network
+
+  court-db:
+    image: mongo
+    container_name: court-db
+    restart: on-failure
+    volumes:
+      - /Users/ad/Desktop/courtdata/data:/data
+    networks:
+      - network
+
+  api_gateway:
+    build:
+      context: ./api-gateway/
+      dockerfile: Dockerfile
+    container_name: api_gateway
+    restart: on-failure
+    depends_on:
+      - auth-microservice
+      - court-microservice
+    ports:
+      - 8000:8000
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  auth-db:
+  court-db:
