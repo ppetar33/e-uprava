@@ -24,6 +24,7 @@ import { PolicemanNotFoundComponent } from './@pages/policeman/policeman-not-fou
 import { PolicemanNoAccessComponent } from './@pages/policeman/policeman-no-access/policeman-no-access.component';
 import { UserNotFoundComponent } from './@pages/user/user-not-found/user-not-found.component';
 import { UserNoAccessComponent } from './@pages/user/user-no-access/user-no-access.component';
+import { ToastBarComponent } from './@components/toast-bar/toast-bar.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { UserNoAccessComponent } from './@pages/user/user-no-access/user-no-acce
     PolicemanNotFoundComponent,
     PolicemanNoAccessComponent,
     UserNotFoundComponent,
-    UserNoAccessComponent
+    UserNoAccessComponent,
+    ToastBarComponent
   ],
   imports: [
     BrowserModule,
