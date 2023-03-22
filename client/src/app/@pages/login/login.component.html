@@ -1,1 +1,38 @@
-<p>login works!</p>
+<ng-container>
+    <div class="login__wrapper" [ngClass]="{ 'disabled' : isLoading }">
+        <div class="login">
+            <div class="login__title-wrapper">
+                <h1 class="login__title" mat-dialog-title>Login</h1>
+                <i class="bi bi-x" (click)="closeDialog()"></i>
+            </div>
+            <div class="login__body-wrapper" mat-dialog-content>
+                <div class="login__body">
+                    <form class="login__form-wrapper" [formGroup]="loginForm">
+                        <mat-form-field appearance="fill">
+                            <mat-label>JMBG</mat-label>
+                            <input class="login__input" type="email" matInput formControlName="jmbg" placeholder="Enter you JMBG">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Password</mat-label>
+                            <input class="login__input" type="password" matInput formControlName="password" placeholder="Enter you password">
+                        </mat-form-field>
+                    </form>
+                </div>
+                <div class="login__register-actions">
+                    <div class="login__register-wrapper">
+                        <a class="login__register" (click)="openRegistration()">REGISTER</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login__btn-wrapper">
+            <button class="login__btn" mat-button type="button" (click)="submit()" [ngClass]="{ 'disabled-btn' : !loginForm.valid }">Login</button>
+        </div>
+    </div>
+    <div class="spinner-wrapper" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <app-toast-bar [message]="errorMessage" [status]="'failure'" [duration]="2" *ngIf="errorMessage"></app-toast-bar>
+</ng-container>
