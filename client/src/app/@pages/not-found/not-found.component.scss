@@ -1,0 +1,31 @@
+.not-found {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(5, 68, 104);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.not-found__info {
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.not-found__btn {
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: white;
+  transition: 0.2s all ease-in-out;
+  font-weight: bold;
+}
+
+.not-found__btn:hover {
+  color: rgb(5, 68, 104);
+  transition: 0.2s all ease-in-out;
+  background: white;
+}
