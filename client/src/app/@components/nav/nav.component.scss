@@ -54,21 +54,22 @@
 }
 
 .nav__login-btn {
-  border: 1px solid white;
   padding: 10px 15px;
   cursor: pointer;
-  color: rgb(56, 56, 56);
   transition: 0.2s all ease-in-out;
   font-size: 13px;
   display: flex;
   letter-spacing: 2px;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-top: -5px;
+  background: #0a335d;
+  color: white;
+  margin-left: 20px;
 }
 
 .nav__login-btn:hover {
   transition: 0.2s all ease-in-out;
-  color: rgb(56, 56, 56);
+  background: rgb(8, 40, 71);
 }
 
 .draw {

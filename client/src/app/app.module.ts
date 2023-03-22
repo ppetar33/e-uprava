@@ -25,6 +25,7 @@ import { PolicemanNoAccessComponent } from './@pages/policeman/policeman-no-acce
 import { UserNotFoundComponent } from './@pages/user/user-not-found/user-not-found.component';
 import { UserNoAccessComponent } from './@pages/user/user-no-access/user-no-access.component';
 import { ToastBarComponent } from './@components/toast-bar/toast-bar.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ToastBarComponent } from './@components/toast-bar/toast-bar.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CommonUiModule
+    CommonUiModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
