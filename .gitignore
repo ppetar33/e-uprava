@@ -1,4 +1,6 @@
 /.idea
 /.DS_Store
-client/node_modules/
-client/.angular/
+client/court-client/node_modules/
+client/auth-client/node_modules/
+client/court-client/.angular/
+client/auth-client/.angular/
