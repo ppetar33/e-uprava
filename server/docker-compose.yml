@@ -20,7 +20,7 @@ services:
     container_name: auth-db
     restart: on-failure
     volumes:
-      - /Users/ad/Desktop/authdata/data:/data
+      - /Users/dovla/Desktop/authdata/data:/data
     networks:
       - network
 
@@ -44,7 +44,31 @@ services:
     container_name: court-db
     restart: on-failure
     volumes:
-      - /Users/ad/Desktop/courtdata/data:/data
+      - /Users/dovla/Desktop/courtdata/data:/data
+    networks:
+      - network
+
+  open-data-microservice:
+    image: open-data-microservice
+    container_name: open-data-microservice
+    build:
+      context: .
+      dockerfile: ./open_data_microservice/Dockerfile
+    restart: always
+    environment:
+      -COURT_MICROSERVICE_PORT: ${OPEN_DATA_MICROSERVICE_PORT}
+      -COURT_DB_PORT: ${OPEN_DATA_DB_PORT}
+    depends_on:
+      - open-data-db
+    networks:
+      - network
+
+  open-data-db:
+    image: mongo
+    container_name: open-data-db
+    restart: on-failure
+    volumes:
+      - /Users/dovla/Desktop/open-data/data:/data
     networks:
       - network
 
