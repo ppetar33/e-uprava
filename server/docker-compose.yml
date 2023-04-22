@@ -20,7 +20,7 @@ services:
     container_name: auth-db
     restart: on-failure
     volumes:
-      - /Users/dovla/Desktop/authdata/data:/data
+      - /Users/ognjen/Desktop/authdata/data:/data
     networks:
       - network
 
@@ -44,7 +44,7 @@ services:
     container_name: court-db
     restart: on-failure
     volumes:
-      - /Users/dovla/Desktop/courtdata/data:/data
+      - /Users/ognjen/Desktop/courtdata/data:/data
     networks:
       - network
 
@@ -68,7 +68,31 @@ services:
     container_name: open-data-db
     restart: on-failure
     volumes:
-      - /Users/dovla/Desktop/open-data/data:/data
+      - /Users/ognjen/Desktop/open-data/data:/data
+    networks:
+      - network
+
+  communal-police-microservice:
+    image: communal-police-microservice
+    container_name: communal-police-microservice
+    build:
+      context: .
+      dockerfile: ./open_data_microservice/Dockerfile
+    restart: always
+    environment:
+      -COURT_MICROSERVICE_PORT: ${COMMUNAL_POLICE_MICROSERVICE_PORT}
+      -COURT_DB_PORT: ${COMMUNAL_POLICE_DB_PORT}
+    depends_on:
+      - open-data-db
+    networks:
+      - network
+
+  communal-police-db:
+    image: mongo
+    container_name: communal-police-db
+    restart: on-failure
+    volumes:
+      - /Users/ognjen/Desktop/communal-police/data:/data
     networks:
       - network
 
