@@ -6,3 +6,8 @@ client/court-client/.angular/
 client/auth-client/.angular/
 client/open-data-client/node_modules/
 client/open-data-client/.angular/
+client/communal-police-client/node_modules/
+client/communal-police-client/.angular/
+client/.DS_Store
+client/court-client/.DS_Store
+server/court_microservice/.DS_Store
