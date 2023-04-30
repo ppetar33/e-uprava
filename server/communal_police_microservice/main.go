@@ -20,15 +20,22 @@ func main() {
 	router := mux.NewRouter()
 	router.StrictSlash(true)
 
-	server, err := database.ConnectToOpenDataDatabase()
-
+	server, err := database.ConnectToCommunalPoliceDatabase()
+	database.Ping()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Println(server.NumberSessionsInProgress())
 
-	router.HandleFunc("/api/open-data/test", CommunalPoliceTest).Methods("GET")
+	repo := database.Repository{}
+	handler := Handler{
+		Repo: repo,
+	}
+
+	router.HandleFunc("/api/communal-police/test", CommunalPoliceTest).Methods("GET")
+	router.HandleFunc("/api/communal-police/create-communal-problem", handler.CreateCommunalProblem).Methods("POST")
+	router.HandleFunc("/api/communal-police/get-communal-problems", handler.GetAllCommunalProblems).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
@@ -40,7 +47,7 @@ func startServer(router *mux.Router, cors func(http.Handler) http.Handler) {
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
 	srv := &http.Server{
-		Addr:         "0.0.0.0:8082",
+		Addr:         "0.0.0.0:8083",
 		Handler:      cors(router),
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  120 * time.Second,
