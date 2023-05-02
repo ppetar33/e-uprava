@@ -29,6 +29,7 @@ func main() {
 	fmt.Println(server.NumberSessionsInProgress())
 
 	router.HandleFunc("/api/auth/login", Login).Methods("POST")
+	router.HandleFunc("/api/auth/register", Register).Methods("POST")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
