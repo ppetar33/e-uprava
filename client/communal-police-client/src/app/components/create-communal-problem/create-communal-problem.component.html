@@ -50,13 +50,13 @@
 <body>
 	<form>
 		<label for="field1">Communal problem title:</label>
-		<input type="text" name="field1" id="field1">
+		<input type="text" name="title" id="title" [(ngModel)]="communalProblema.title">
 		
 		<label for="field2">Communal problem description:</label>
-		<input type="text" name="field2" id="field2">
+		<input type="text" name="desription" id="desription" [(ngModel)]="communalProblema.description">
 		
-		<label for="field3">Communal problem description:</label>
-		<input type="text" name="field3" id="field3">
+		<label for="field3">Communal problem address:</label>
+		<input type="text" name="address" id="address" [(ngModel)]="communalProblema.address">
 
         <div style="text-align: center;">
             <div style="margin-left:100px;">
@@ -65,14 +65,14 @@
         </div>
 		
 		<label for="checkbox1">Anonymus:</label>
-		<input type="checkbox" name="checkbox1" id="checkbox1">
+		<input type="checkbox" name="anonymus" id="anonymus" [(ngModel)]="communalProblema.anonymus">
 		
 		<label for="dropdown1">Select municipality:</label>
-		<select name="dropdown1" id="dropdown1">
+		<select name="municipality" id="municipality" [(ngModel)]="communalProblema.municipality">
 			<option value="">-- Municipality --</option>
-			<option value="option1">Beograd</option>
-			<option value="option2">Novi Sad</option>
-			<option value="option3">Niš</option>
+			<option value="beograd">Beograd</option>
+			<option value="novi-sad">Novi Sad</option>
+			<option value="nis">Niš</option>
 		</select>
 		
 		<button type="submit" (click)="onSubmit($event)">Report</button>

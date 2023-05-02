@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
+import { CommunalProblem } from 'src/app/model/communal-problem';
+import { CommunalPoliceServiceService } from 'src/app/services/communal-police-service.service';
 
 @Component({
   selector: 'app-create-communal-problem',
@@ -10,15 +13,35 @@ import { finalize } from 'rxjs';
 export class CreateCommunalProblemComponent implements OnInit {
 
   imageEvent: any;
+  communalProblema: CommunalProblem;
 
   constructor(
-    private storage: AngularFireStorage
-  ) { }
+    private router: Router,
+    private storage: AngularFireStorage,
+    private service: CommunalPoliceServiceService
+  ) { 
+    this.imageEvent = null
 
-  ngOnInit(): void {
+    this.communalProblema = {
+      id: "",
+      title: "",
+      description: "",
+      imageUrl: "",
+      address: "",
+      reportedById: "",
+      policemanId: "",
+      reportId: "",
+      judgeId: "",
+      anonymus: false,
+      municipality: "",
+      date: ""
+    }
   }
 
-  showForm = false;
+  ngOnInit(): void {
+
+  }
+
   formData = {
     field1: '',
     field2: '',
@@ -30,7 +53,16 @@ export class CreateCommunalProblemComponent implements OnInit {
 
   onSubmit(event: any) {
     console.log('Form submitted:', this.formData);
-    this.showForm = false;
+    console.log('Form submitted:', this.communalProblema);
+    // this.router.navigate(['create-communal-problem']);
+    this.service.createNew(this.communalProblema).subscribe(res => {
+      console.log("Succesfull save")
+      this.router.navigate(['home']);
+    },
+      err => {
+        console.log("Error")
+      })
+
   }
 
   uploadFile(files: FileList) {
