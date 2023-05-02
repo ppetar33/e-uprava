@@ -21,14 +21,20 @@ func main() {
 	router.StrictSlash(true)
 
 	server, err := database.ConnectToOpenDataDatabase()
-
+	database.Ping()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Println(server.NumberSessionsInProgress())
 
+	repo := database.Repository{}
+	handler := Handler{
+		Repo: repo,
+	}
+
 	router.HandleFunc("/api/open-data/test", OpenDataTest).Methods("GET")
+	router.HandleFunc("/api/open-data/get-communal-cops", handler.GetAllCommunalCops).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
