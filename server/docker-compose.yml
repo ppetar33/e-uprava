@@ -77,13 +77,13 @@ services:
     container_name: communal-police-microservice
     build:
       context: .
-      dockerfile: ./open_data_microservice/Dockerfile
+      dockerfile: ./communal_police_microservice/Dockerfile
     restart: always
     environment:
-      -COURT_MICROSERVICE_PORT: ${COMMUNAL_POLICE_MICROSERVICE_PORT}
-      -COURT_DB_PORT: ${COMMUNAL_POLICE_DB_PORT}
+      -COMMUNAL_POLICE_MICROSERVICE_PORT: ${COMMUNAL_POLICE_MICROSERVICE_PORT}
+      -COMMUNAL_POLICE_DB_PORT: ${COMMUNAL_POLICE_DB_PORT}
     depends_on:
-      - open-data-db
+      - communal-police-db
     networks:
       - network
 
@@ -105,6 +105,8 @@ services:
     depends_on:
       - auth-microservice
       - court-microservice
+      - open-data-microservice
+      - communal-police-microservice
     ports:
       - 8000:8000
     networks:
@@ -117,3 +119,5 @@ networks:
 volumes:
   auth-db:
   court-db:
+  communal-police-db:
+  open-data-db:
