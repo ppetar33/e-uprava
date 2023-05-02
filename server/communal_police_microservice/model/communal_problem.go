@@ -5,6 +5,7 @@ type CommunalProblem struct {
 	Title        string `json:"title" bson:"title"`
 	Description  string `json:"description" bson:"description"`
 	Address      string `json:"address" bson:"address"`
+	ImageUrl     string `json:"imageUrl" bson:"imageUrl"`
 	ReportedById string `json:"reportedById" bson:"reportedById"`
 	ReportId     string `json:"reportId" bson:"reportId"`
 	PolicemanId  string `json:"policemanId" bson:"policemanId"`
