@@ -43,11 +43,11 @@ func Login(response http.ResponseWriter, request *http.Request) {
 		var redirectURL string
 
 		if role == "judge" {
-			redirectURL = "http://localhost:4200"
-		} else if role == "policeman" {
 			redirectURL = "http://localhost:4300"
-		} else {
+		} else if role == "policeman" {
 			redirectURL = "http://localhost:4400"
+		} else {
+			redirectURL = "http://localhost:4500"
 		}
 
 		loginResponse := &model.LoginResponse{
