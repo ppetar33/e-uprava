@@ -3,10 +3,13 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
+	"github.com/ppetar33/e-uprava/auth_microservice/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -23,6 +26,71 @@ func ConnectToAuthDatabase() (*mongo.Client, error) {
 	}
 
 	return client, nil
+}
+
+func Login(user *model.Auth) (string, string, error) {
+	var dbUser model.Auth
+
+	collection := client.Database("AUTH").Collection("user")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	err := collection.FindOne(ctx, bson.M{"jmbg": user.Jmbg}).Decode(&dbUser)
+
+	defer cancel()
+
+	if err != nil {
+		return "Wrong Credentials", "", nil
+	}
+
+	userPass := []byte(user.Password)
+	dbPass := []byte(dbUser.Password)
+
+	passErr := bcrypt.CompareHashAndPassword(dbPass, userPass)
+
+	if passErr != nil {
+		return "Wrong Credentials", "", nil
+	}
+
+	jwtToken, errToken := GenerateJWT(user.Jmbg, dbUser.Role)
+	if errToken != nil {
+		return `{"message":"` + errToken.Error() + `"}`, "", nil
+	}
+
+	return jwtToken, dbUser.Role, nil
+}
+
+func RegisterUser(user *model.Auth) (*mongo.InsertOneResult, error) {
+	authResult, err := WriteUserIntoDatabase(user)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return authResult, nil
+}
+
+func WriteUserIntoDatabase(user *model.Auth) (*mongo.InsertOneResult, error) {
+	collection := client.Database("AUTH").Collection("user")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	var auth model.Auth
+
+	auth.Id = uuid.New().String()
+	auth.Password = GetHash([]byte(user.Password))
+	auth.Username = user.Username
+	auth.FirstName = user.FirstName
+	auth.LastName = user.LastName
+	auth.Jmbg = user.Jmbg
+	auth.Email = user.Email
+	auth.Role = user.Role
+	auth.Court = user.Court
+
+	resultAuth, _ := collection.InsertOne(ctx, auth)
+
+	fmt.Println("****** Result inserted into AUTH database   ******  : ", auth)
+
+	return resultAuth, nil
 }
 
 func Ping() {
