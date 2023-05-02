@@ -15,6 +15,7 @@ import { JudgeNotFoundComponent } from './@pages/judge/judge-not-found/judge-not
 import { JudgeNoAccessComponent } from './@pages/judge/judge-no-access/judge-no-access.component';
 import { ToastBarComponent } from './@components/toast-bar/toast-bar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { JudgeCommunalProblemsComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     JudgeHomeComponent,
     JudgeNotFoundComponent,
     JudgeNoAccessComponent,
-    ToastBarComponent
+    ToastBarComponent,
+    JudgeCommunalProblemsComponent
   ],
   imports: [ 
     BrowserModule,

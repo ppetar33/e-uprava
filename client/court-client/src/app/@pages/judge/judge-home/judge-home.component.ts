@@ -7,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JudgeHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    localStorage.setItem('nav', JSON.stringify(0));
+  }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
 }
