@@ -1,0 +1,50 @@
+<div class="home">
+    <div class="home__wrapper">
+        <div class="home__container">
+            <div class="home__header">
+                <app-header></app-header>
+            </div>
+            <div class="home__content">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                      <a class="nav-link active pointer" (click)="clickCops()">Communal cops</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link pointer" (click)="clickJudges()">Judges</a>
+                    </li>
+                  </ul>
+
+                  <div id="container">        
+                    <section class="staff-section">
+                        <div *ngIf="!isJudgesSelected">
+                            <div *ngFor="let user of copsList">
+                                <app-staff-card [user]="user"></app-staff-card>
+                            </div>
+                        </div>
+                        <div *ngIf="isJudgesSelected">
+                            <div *ngFor="let user of judgesList">
+                                <app-staff-card [user]="user"></app-staff-card>
+                            </div>
+                        </div>
+                    </section>
+                
+                    <section class="municipality-section">
+                        <div class="list-group">
+                            <button type="button" class="list-group-item list-group-item-action active">
+                                Municipality
+                            </button>
+                            <button type="button" class="list-group-item list-group-item-action">Novi Sad</button>
+                            <button type="button" class="list-group-item list-group-item-action">Belgrade</button>
+                            <button type="button" class="list-group-item list-group-item-action">Nis</button>
+                            <button type="button" class="list-group-item list-group-item-action">Subotica</button>
+                          </div>
+                    </section>
+                </div> 
+
+            </div>
+            <div class="home__footer">
+                <app-footer></app-footer>
+            </div>
+        </div>
+    </div>
+</div>

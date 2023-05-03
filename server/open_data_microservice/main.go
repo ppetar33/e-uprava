@@ -29,6 +29,8 @@ func main() {
 	fmt.Println(server.NumberSessionsInProgress())
 
 	router.HandleFunc("/api/open-data/test", OpenDataTest).Methods("GET")
+	router.HandleFunc("/api/open-data/get-all-cops", GetAllCops).Methods("GET")
+	router.HandleFunc("/api/open-data/get-all-judges", GetAllJudges).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 

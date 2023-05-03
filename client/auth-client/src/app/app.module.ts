@@ -19,6 +19,8 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommunalProblemCardComponent } from './@components/communal-problem-card/communal-problem-card.component';
 import { CommunalProblemsComponent } from './@components/communal-problems/communal-problems.component';
+import { StaffComponent } from './@pages/staff/staff.component';
+import { StaffCardComponent } from './@components/staff-card/staff-card.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { CommunalProblemsComponent } from './@components/communal-problems/commu
     NotFoundComponent,
     ToastBarComponent,
     CommunalProblemCardComponent,
-    CommunalProblemsComponent
+    CommunalProblemsComponent,
+    StaffComponent,
+    StaffCardComponent
   ],
   imports: [
     BrowserModule,

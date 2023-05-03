@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+          <div class="articles card">
+            <div class="card-header d-flex align-items-center">
+              <h2 *ngIf="user.role == 'judge'" class="h3">Judge</h2>
+              <h2 *ngIf="user.role == 'cop'" class="h3">Communal cop</h2>
+            </div>
+            <div class="card-body no-padding">
+              <div class="item d-flex align-items-center">
+                <div class="image"><img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="text"><a href="#">
+                    <h3 class="h5">{{user.name}}</h3></a><small>{{user.email}}</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+</div>

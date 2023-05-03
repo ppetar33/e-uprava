@@ -23,7 +23,6 @@ export class CommunalProblemsComponent implements OnInit {
     this.communalProblemService.getAll().subscribe(res => {
       this.listCommunalProblems = res;
     })
-
   }
 
 }

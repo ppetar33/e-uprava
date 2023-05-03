@@ -9,7 +9,7 @@ import { LoginComponent } from 'src/app/@pages/login/login.component';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  public itemsList: Array<string> = ['HOME', 'ABOUT'];
+  public itemsList: Array<string> = ['HOME','STAFF', 'ABOUT'];
   public activeIndex: number = 0;
 
   constructor(
