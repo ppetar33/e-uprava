@@ -18,7 +18,7 @@ export class NavComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.activeIndex = Number(JSON.parse(localStorage.getItem('nav') || ''));
+    this.activeIndex = localStorage.getItem('nav') ? Number(JSON.parse(localStorage.getItem('nav') || '')) : 0;
   }
 
   public goToPage(page: string, index: number): void {

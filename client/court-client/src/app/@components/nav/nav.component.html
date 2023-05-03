@@ -1,1 +1,11 @@
-<p>nav works!</p>
+<div class="nav">
+    <div class="nav__wrapper">
+        <div class="nav__container container">
+            <div class="nav__items">
+                <ul class="nav__list" *ngFor="let item of itemsList; let i = index">
+                    <li [class.active]="i === activeIndex" class="nav__list-item draw meet" (click)="goToPage(item, i)">{{ item }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

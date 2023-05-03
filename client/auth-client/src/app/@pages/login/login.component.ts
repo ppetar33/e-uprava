@@ -38,7 +38,28 @@ export class LoginComponent implements OnInit {
   }
 
   public submit(): void {
+    this.isLoading = true;
 
+    const request = {
+      'jmbg': (this.loginForm.value.jmbg).toString(),
+      'password': this.loginForm.value.password
+    }
+
+    this.authService.login(request).subscribe({
+      next: (resp) => {
+        const tokenObject = JSON.parse(resp); 
+        if (tokenObject.token.includes('Wrong')) {
+          this.errorMessage = tokenObject.token;
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.log(error.error);
+        this.isLoading = false;
+      }
+    });
+
+    this.errorMessage = '';
   }
 
   public openRegistration(): void {

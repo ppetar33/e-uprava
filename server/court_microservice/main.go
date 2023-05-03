@@ -28,7 +28,14 @@ func main() {
 
 	fmt.Println(server.NumberSessionsInProgress())
 
-	router.HandleFunc("/api/court/test", CourtTest).Methods("GET")
+	router.HandleFunc("/api/court/communal-problem", WriteCommunalProblem).Methods("POST")
+	router.HandleFunc("/api/court/communal-problem", GetCommunalProblems).Methods("GET")
+	router.HandleFunc("/api/court/communal-problem/id/{id}", GetCommunalProblemById).Methods("GET")
+	router.HandleFunc("/api/court/communal-problem/accept/{id}", AcceptCommunalProblem).Methods("PUT")
+	router.HandleFunc("/api/court/communal-problem/decline/{id}", DeclineCommunalProblem).Methods("PUT")
+	router.HandleFunc("/api/court/communal-problem/judge/{id}", GetJudgeCommunalProblems).Methods("GET")
+	router.HandleFunc("/api/court/judge", WriteJudge).Methods("POST")
+	router.HandleFunc("/api/court/judge", GetJudges).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
