@@ -74,7 +74,8 @@
               "browserTarget": "communal-police-client:build:production"
             },
             "development": {
-              "browserTarget": "communal-police-client:build:development"
+              "browserTarget": "communal-police-client:build:development",
+              "port": 4400
             }
           },
           "defaultConfiguration": "development"

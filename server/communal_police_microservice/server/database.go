@@ -102,3 +102,63 @@ func (r Repository) GetAllCommunalProblems() ([]model.CommunalProblem, error) {
 
 	return communalProblems, nil
 }
+
+func (r Repository) GetCommunalProblemsByPoliceman(policemanId string) ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"policemanId", policemanId}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var communalProblems []model.CommunalProblem
+	if err = cursor.All(ctx, &communalProblems); err != nil {
+		fmt.Println(err)
+	}
+	return communalProblems, nil
+}
+
+func (r Repository) GetCommunalProblemsByCitizen(policemanId string) ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"policemanId", policemanId}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var communalProblems []model.CommunalProblem
+	if err = cursor.All(ctx, &communalProblems); err != nil {
+		fmt.Println(err)
+	}
+	return communalProblems, nil
+}
+
+func (r Repository) AddReport(id string, report string) error {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	_, err := collection.UpdateOne(
+		ctx,
+		bson.M{"id": id},
+		bson.D{
+			{"$set", bson.D{{"report", report}}},
+		},
+	)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nil
+}
