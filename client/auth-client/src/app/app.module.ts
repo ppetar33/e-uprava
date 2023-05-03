@@ -17,6 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS, JwtInterceptor } from '@auth0/angular-jwt';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { CommunalProblemCardComponent } from './@components/communal-problem-card/communal-problem-card.component';
+import { CommunalProblemsComponent } from './@components/communal-problems/communal-problems.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     LoginComponent,
     RegisterComponent,
     NotFoundComponent,
-    ToastBarComponent
+    ToastBarComponent,
+    CommunalProblemCardComponent,
+    CommunalProblemsComponent
   ],
   imports: [
     BrowserModule,
