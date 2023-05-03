@@ -20,7 +20,7 @@ services:
     container_name: auth-db
     restart: on-failure
     volumes:
-      - /Users/ad/Desktop/authdata/data:/data
+      - /Users/dovla/Desktop/authdata/data:/data
     networks:
       - network
 
@@ -44,7 +44,7 @@ services:
     container_name: court-db
     restart: on-failure
     volumes:
-      - /Users/ad/Desktop/courtdata/data:/data
+      - /Users/dovla/Desktop/courtdata/data:/data
     networks:
       - network
 
@@ -68,7 +68,7 @@ services:
     container_name: open-data-db
     restart: on-failure
     volumes:
-      - /Users/ad/Desktop/open-data/data:/data
+      - /Users/dovla/Desktop/open-data/data:/data
     networks:
       - network
 
@@ -92,7 +92,7 @@ services:
     container_name: communal-police-db
     restart: on-failure
     volumes:
-      - /Users/ad/Desktop/communal-police/data:/data
+      - /Users/dovla/Desktop/communal-police/data:/data
     networks:
       - network
 

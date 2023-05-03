@@ -48,22 +48,6 @@ func (h Handler) CreateCommunalProblem(response http.ResponseWriter, request *ht
 }
 
 func (h Handler) GetAllCommunalProblems(response http.ResponseWriter, request *http.Request) {
-	//response.Header().Set("Content-Type", "application/json")
-	//
-	//result, err := h.Repo.GetAllCommunalProblems()
-	//
-	//if result == nil {
-	//	json.NewEncoder(response).Encode(err.Error())
-	//	return
-	//}
-	//
-	//if err != nil {
-	//	http.Error(response, err.Error(), http.StatusBadRequest)
-	//	return
-	//}
-	//
-	//json.NewEncoder(response).Encode(result)
-
 	response.Header().Set("Content-Type", "application/json")
 
 	communalProblems, err := h.Repo.GetAllCommunalProblems()
@@ -78,5 +62,4 @@ func (h Handler) GetAllCommunalProblems(response http.ResponseWriter, request *h
 			json.NewEncoder(response).Encode(communalProblems)
 		}
 	}
-
 }
