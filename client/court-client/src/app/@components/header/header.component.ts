@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  constructor(
+    private router: Router
+  ) { }
 
-  constructor() { }
+  public ngOnInit(): void {
+  }
 
-  ngOnInit(): void {
+  public goToHome(): void {
+    this.router.navigate(['home']);
   }
 
 }
