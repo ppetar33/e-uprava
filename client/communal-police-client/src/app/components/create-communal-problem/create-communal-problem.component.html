@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Form</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+            max-width: 600px; /* or whatever width you want */
+            margin: 0 auto; /* this centers the form horizontally within its parent container */
+
+		}
+		
+		label {
+			margin: 10px 0;
+			font-size: 16px;
+		}
+		
+		input, select {
+			margin: 10px 0;
+			padding: 10px;
+			font-size: 16px;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+			width: 100%;
+			box-sizing: border-box;
+		}
+		
+		button {
+			margin: 10px 0;
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		
+		button:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<form>
+		<label for="field1">Communal problem title:</label>
+		<input type="text" name="title" id="title" [(ngModel)]="communalProblema.title">
+		
+		<label for="field2">Communal problem description:</label>
+		<input type="text" name="desription" id="desription" [(ngModel)]="communalProblema.description">
+		
+		<label for="field3">Communal problem address:</label>
+		<input type="text" name="address" id="address" [(ngModel)]="communalProblema.address">
+
+        <div style="text-align: center;">
+            <div style="margin-left:100px;">
+              <input type="file" id="actual-btn" class="uploadBtn" (change)="imageEvent = $event" accept=".png,.jpg" />
+            </div>
+        </div>
+		
+		<label for="checkbox1">Anonymus:</label>
+		<input type="checkbox" name="anonymus" id="anonymus" [(ngModel)]="communalProblema.anonymus">
+		
+		<label for="dropdown1">Select municipality:</label>
+		<select name="municipality" id="municipality" [(ngModel)]="communalProblema.municipality">
+			<option value="">-- Municipality --</option>
+			<option value="beograd">Beograd</option>
+			<option value="novi-sad">Novi Sad</option>
+			<option value="nis">Niš</option>
+		</select>
+		
+		<button type="submit" (click)="onSubmit($event)">Report</button>
+	</form>
+</body>
+</html>
