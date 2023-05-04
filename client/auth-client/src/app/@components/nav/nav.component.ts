@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth0/auth0-angular';
+import { AuthService as AuthenticationService } from 'src/app/@api/services/auth.service';
 import { LoginComponent } from 'src/app/@pages/login/login.component';
 
 @Component({
@@ -14,7 +16,9 @@ export class NavComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public auth: AuthService,
+    private authService: AuthenticationService
   ) { }
 
   public ngOnInit(): void {
@@ -32,5 +36,15 @@ export class NavComponent implements OnInit {
     dialogRef.disableClose = true;
     dialogRef.autoFocus = false;
     this.dialog.open(LoginComponent, dialogRef);
+  }
+
+  public redirectUser(): void {
+    window.location.href = 'http://localhost:8000/api/auth/login';
+    // this.authService.loginAuth();
+  }
+
+  public logout(): void {
+    window.location.href = 'http://localhost:8000/api/auth/logout';
+    // this.authService.logoutAuth();
   }
 }

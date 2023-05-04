@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/google/uuid"
 	"github.com/ppetar33/e-uprava/auth_microservice/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -10,8 +12,51 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"golang.org/x/crypto/bcrypt"
+	"golang.org/x/oauth2"
 	"time"
 )
+
+type Authenticator struct {
+	*oidc.Provider
+	oauth2.Config
+}
+
+func New() (*Authenticator, error) {
+	provider, err := oidc.NewProvider(
+		context.Background(),
+		"https://dev-xd1sqt4xwi2fj3r4.us.auth0.com/",
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	conf := oauth2.Config{
+		ClientID:     "3trBDTD1UQPNatlnfJue4m9KVMQjjDZF",
+		ClientSecret: "1uL6OFxpOLXZX4dfuEpVEZGzfwhaxEv69w69pHCT-9niAMStDFpk8_-Qos8MtGb0",
+		RedirectURL:  "http://localhost:4200",
+		Endpoint:     provider.Endpoint(),
+		Scopes:       []string{oidc.ScopeOpenID, "profile"},
+	}
+
+	return &Authenticator{
+		Provider: provider,
+		Config:   conf,
+	}, nil
+}
+
+// VerifyIDToken verifies that an *oauth2.Token is a valid *oidc.IDToken.
+func (a *Authenticator) VerifyIDToken(ctx context.Context, token *oauth2.Token) (*oidc.IDToken, error) {
+	rawIDToken, ok := token.Extra("id_token").(string)
+	if !ok {
+		return nil, errors.New("no id_token field in oauth2 token")
+	}
+
+	oidcConfig := &oidc.Config{
+		ClientID: a.ClientID,
+	}
+
+	return a.Verifier(oidcConfig).Verify(ctx, rawIDToken)
+}
 
 var client *mongo.Client
 

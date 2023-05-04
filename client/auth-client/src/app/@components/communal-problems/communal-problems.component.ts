@@ -21,6 +21,7 @@ export class CommunalProblemsComponent implements OnInit {
 
   private getAllCommunalProblems(): void {
     this.communalProblemService.getAll().subscribe(res => {
+      console.log(res)
       this.listCommunalProblems = res;
     })
   }
