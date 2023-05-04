@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
@@ -71,5 +71,12 @@ export class AuthService {
 
   public logoutAuth(): Observable<any> {
     return this.httpClient.get('http://localhost:8000/api/auth/logout');
+  }
+
+  public test(userid: string, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.httpClient.get(`https://dev-xd1sqt4xwi2fj3r4.us.auth0.com/api/v2/users/${userid}`, { headers });
   }
 }

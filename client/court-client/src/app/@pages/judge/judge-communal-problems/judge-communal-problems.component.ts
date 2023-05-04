@@ -3,8 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/@api/services/auth.service';
+import { AuthService as AuthenticationService} from 'src/app/@api/services/auth.service';
 import { JudgeService } from 'src/app/@api/services/judge.service';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-judge-communal-problems',
@@ -20,9 +21,10 @@ export class JudgeCommunalProblemsComponent implements OnInit {
 
   constructor(
     private judgeService: JudgeService,
-    private authService: AuthService,
+    private authService: AuthenticationService,
     private router: Router,
     private dialog: MatDialog,
+    public auth: AuthService,
   ) { 
     localStorage.setItem('nav', JSON.stringify(1));
   }

@@ -21,7 +21,7 @@ import { TokenService } from '../services/token.service';
       let tokenService = this.injector.get(TokenService);
       let tokenizedReq = req.clone({
         setHeaders: {
-          Token: `${tokenService.getToken()}`,
+          authorization: `Bearer ${tokenService.getToken()}`,
         },
       });
       return next.handle(tokenizedReq);
