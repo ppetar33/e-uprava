@@ -9,7 +9,7 @@
                     <div class="spinner-border text-primary" role="status">
                         <span class="sr-only"></span>
                     </div>
-                </div>
+                </div>                
                 <div class="problem__no-data" *ngIf="!isLoading && this.dataSource.data.toString() === '[]'">
                     <img class="problem__no-data-img" src="../../../../assets/images/no-data.png" alt="">
                     <p class="problem__no-data-txt">There is no communal problems assign to you at this moment, sit tight.</p>
@@ -25,7 +25,6 @@
                             </mat-form-field>
                           </div>
                         </div>
-                          
                         <div class="problem__table mat-elevation-z8">
                           <mat-table [dataSource]="dataSource" matSort id="problem-table">
                             <ng-container matColumnDef="title">

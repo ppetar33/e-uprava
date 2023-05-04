@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	gorillaHandlers "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	database "github.com/ppetar33/e-uprava/auth_microservice/server"
 	"log"
 	"net/http"
@@ -17,12 +17,8 @@ import (
 func main() {
 	log.Println("Starting the application")
 
-	auth, err := database.New()
-	if err != nil {
-		log.Fatalf("Failed to initialize the authenticator: %v", err)
-	}
-
-	rtr := database.NewRouter(auth)
+	router := mux.NewRouter()
+	router.StrictSlash(true)
 
 	server, err := database.ConnectToAuthDatabase()
 
@@ -32,15 +28,15 @@ func main() {
 
 	fmt.Println(server.NumberSessionsInProgress())
 
-	//router.HandleFunc("/api/auth/login", Login).Methods("POST")
-	//router.HandleFunc("/api/auth/register", Register).Methods("POST")
+	router.HandleFunc("/api/auth/login", Login).Methods("POST")
+	router.HandleFunc("/api/auth/register", Register).Methods("POST")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
-	startServer(rtr, cors)
+	startServer(router, cors)
 }
 
-func startServer(router *gin.Engine, cors func(http.Handler) http.Handler) {
+func startServer(router *mux.Router, cors func(http.Handler) http.Handler) {
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
