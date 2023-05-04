@@ -64,4 +64,12 @@ export class AuthService {
     localStorage.clear();
     this.router.navigate(['']);
   }
+
+  public loginAuth(): Observable<any> {
+    return this.httpClient.get('http://localhost:8000/api/auth/login');
+  }
+
+  public logoutAuth(): Observable<any> {
+    return this.httpClient.get('http://localhost:8000/api/auth/logout');
+  }
 }

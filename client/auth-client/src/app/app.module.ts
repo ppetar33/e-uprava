@@ -21,6 +21,8 @@ import { CommunalProblemCardComponent } from './@components/communal-problem-car
 import { CommunalProblemsComponent } from './@components/communal-problems/communal-problems.component';
 import { StaffComponent } from './@pages/staff/staff.component';
 import { StaffCardComponent } from './@components/staff-card/staff-card.component';
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,13 @@ import { StaffCardComponent } from './@components/staff-card/staff-card.componen
     CommonUiModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AuthModule.forRoot({
+      domain: 'dev-xd1sqt4xwi2fj3r4.us.auth0.com',
+      clientId: '3trBDTD1UQPNatlnfJue4m9KVMQjjDZF',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
   ],
   providers: [
     {
