@@ -5,6 +5,10 @@
 export const environment = {
   production: false,
   APIurl: 'http://localhost:8000/api',
+  auth: {
+    domain: 'dev-xd1sqt4xwi2fj3r4.us.auth0.com',
+    clientId: '3trBDTD1UQPNatlnfJue4m9KVMQjjDZF'
+  }
 };
 
 /*

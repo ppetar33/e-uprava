@@ -6,7 +6,12 @@
                     <li [class.active]="i === activeIndex" class="nav__list-item draw meet" (click)="goToPage(item, i)">{{ item }}</li>
                 </ul>
             </div>
-            <button type="button" class="nav__login-btn" (click)="openLoginDialog()">LOGIN</button>
+            <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+                <button type="button" class="nav__login-btn" (click)="logout()">LOG OUT</button>
+            </ng-container>
+            <ng-template #loggedOut>
+                <button type="button" class="nav__login-btn" (click)="redirectUser()">LOGIN</button>
+            </ng-template>
         </div>
     </div>
 </div>
