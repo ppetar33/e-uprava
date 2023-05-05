@@ -104,3 +104,13 @@ func Register(response http.ResponseWriter, request *http.Request) {
 		json.NewEncoder(response).Encode(authResult)
 	}
 }
+
+func Logout(response http.ResponseWriter, request *http.Request) {
+
+	_, err := server.Logout()
+	println("Odjavljivanje")
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+}

@@ -36,6 +36,10 @@ func main() {
 	router.HandleFunc("/api/communal-police/test", CommunalPoliceTest).Methods("GET")
 	router.HandleFunc("/api/communal-police/create-communal-problem", handler.CreateCommunalProblem).Methods("POST")
 	router.HandleFunc("/api/communal-police/get-communal-problems", handler.GetAllCommunalProblems).Methods("GET")
+	router.HandleFunc("/api/communal-police/get-communal-problems/policeman/{id}", handler.GetPolicemanCommunalProblems).Methods("GET")
+	router.HandleFunc("/api/communal-police/get-communal-problems/citizen/{id}", handler.GetCitizenCommunalProblems).Methods("GET")
+	//router.HandleFunc("/api/communal-police/improve-communal-problem", handler.GetAllCommunalProblems).Methods("PUT")
+	router.HandleFunc("/api/communal-police/add-report/{id}", handler.AddReport).Methods("PUT")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 

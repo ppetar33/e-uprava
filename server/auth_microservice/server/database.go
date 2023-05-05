@@ -100,6 +100,25 @@ func Login(user *model.Auth) (string, string, error) {
 		return `{"message":"` + errToken.Error() + `"}`, "", nil
 	}
 
+	tokenCollection := client.Database("AUTH").Collection("token")
+	_, err = tokenCollection.DeleteMany(ctx, bson.M{})
+	t := model.Token{jwtToken}
+	res, errr := tokenCollection.InsertOne(ctx, t)
+
+	if err != nil {
+		print("Greška brisanja svih tokena")
+	}
+
+	println(res)
+
+	if errr != nil {
+		println("Greška upisivanja tokena")
+		println(errr.Error())
+	}
+
+	println("SAČUVAN JE TOKEN")
+	println(t.Token)
+
 	return jwtToken, dbUser.Role, nil
 }
 
@@ -111,6 +130,19 @@ func RegisterUser(user *model.Auth) (*mongo.InsertOneResult, error) {
 	}
 
 	return authResult, nil
+}
+
+func Logout() (string, error) {
+
+	tokenCollection := client.Database("AUTH").Collection("token")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	_, err := tokenCollection.DeleteMany(ctx, bson.M{})
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return "", nil
 }
 
 func WriteUserIntoDatabase(user *model.Auth) (*mongo.InsertOneResult, error) {
