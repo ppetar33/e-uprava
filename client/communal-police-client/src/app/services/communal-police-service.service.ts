@@ -44,4 +44,24 @@ export class CommunalPoliceServiceService {
 			},
 		{ headers: this.headers, responseType: 'json' });
 	}
+
+	isAuthenticated(): Observable<any> {
+		let url = "http://localhost:8000/api/auth/authenticated"
+		let queryParams = {};
+
+		queryParams = {
+			headers: this.headers,
+			observe: 'response'
+		};
+
+		return this.http.get(url, queryParams);
+	}
+
+	
+
+	
+	  public logoutAuth(): Observable<any> {
+		let url = "http://localhost:8000/api/auth/logout"
+		return this.http.post(url, {});
+	  }
 }
