@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { AuthService as AuthenticationService } from 'src/app/@api/services/auth.service';
 import { LoginComponent } from 'src/app/@pages/login/login.component';
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-nav',
@@ -13,6 +14,7 @@ import { LoginComponent } from 'src/app/@pages/login/login.component';
 export class NavComponent implements OnInit {
   public itemsList: Array<string> = ['HOME','STAFF', 'ABOUT'];
   public activeIndex: number = 0;
+  public isLoggedin: boolean = false;
 
   constructor(
     private router: Router,
@@ -38,13 +40,8 @@ export class NavComponent implements OnInit {
     this.dialog.open(LoginComponent, dialogRef);
   }
 
-  public redirectUser(): void {
-    window.location.href = 'http://localhost:8000/api/auth/login';
-    // this.authService.loginAuth();
-  }
-
   public logout(): void {
-    window.location.href = 'http://localhost:8000/api/auth/logout';
-    // this.authService.logoutAuth();
+    localStorage.clear();
+    this.auth.logout();
   }
 }
