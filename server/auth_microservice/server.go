@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/ppetar33/e-uprava/auth_microservice/model"
 	"github.com/ppetar33/e-uprava/auth_microservice/server"
 	"mime"
@@ -56,6 +57,25 @@ func Login(response http.ResponseWriter, request *http.Request) {
 		}
 
 		json.NewEncoder(response).Encode(loginResponse)
+	}
+}
+
+func Authenticated(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	authenticated, err := server.Authenticated()
+
+	fmt.Println(authenticated)
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if authenticated == (model.Token{}) {
+			json.NewEncoder(response).Encode(`Not authenticated`)
+		} else {
+			json.NewEncoder(response).Encode(authenticated)
+		}
 	}
 }
 

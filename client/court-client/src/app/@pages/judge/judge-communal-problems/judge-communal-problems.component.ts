@@ -18,6 +18,7 @@ export class JudgeCommunalProblemsComponent implements OnInit {
   public displayedColumns = ['title', 'description', 'address'];
   public dataSource!: MatTableDataSource<any>;
   public errorMessage: string = '';
+  public isLoggedin: boolean = false;
 
   constructor(
     private judgeService: JudgeService,
@@ -44,6 +45,16 @@ export class JudgeCommunalProblemsComponent implements OnInit {
       error: (error) => {
         this.errorMessage = 'Error with our server, please try again later.';
         this.isLoading = false;
+      }
+    })
+  }
+
+  public authenticated(): void {
+    this.authService.authenticated().subscribe((resp) => {
+      if (resp.token) {
+        this.isLoggedin = true;
+      } else {
+        this.isLoggedin = false;
       }
     })
   }

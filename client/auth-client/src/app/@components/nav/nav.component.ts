@@ -25,6 +25,17 @@ export class NavComponent implements OnInit {
 
   public ngOnInit(): void {
     this.activeIndex = localStorage.getItem('nav') ? Number(JSON.parse(localStorage.getItem('nav') || '')) : 0;
+    this.authenticated();
+  }
+
+  public authenticated(): void {
+    this.authService.authenticated().subscribe((resp) => {
+      if (resp.token) {
+        this.isLoggedin = true;
+      } else {
+        this.isLoggedin = false;
+      }
+    })
   }
 
   public goToPage(page: string, index: number): void {
@@ -37,11 +48,16 @@ export class NavComponent implements OnInit {
     const dialogRef = new MatDialogConfig();
     dialogRef.disableClose = true;
     dialogRef.autoFocus = false;
-    this.dialog.open(LoginComponent, dialogRef);
+    this.dialog.open(LoginComponent, dialogRef).afterClosed().subscribe(() => {
+      window.location.reload();
+    });
   }
 
   public logout(): void {
-    localStorage.clear();
-    this.auth.logout();
+    this.authService.logoutAuth().subscribe((resp) => {
+      localStorage.clear();
+      window.location.reload();
+      this.router.navigate(['']);
+    });
   }
 }
