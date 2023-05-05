@@ -58,6 +58,7 @@ export class NavComponent implements OnInit {
       localStorage.clear();
       window.location.reload();
       this.router.navigate(['']);
+      window.location.href = "http://localhost:4200/home"
     });
   }
 }
