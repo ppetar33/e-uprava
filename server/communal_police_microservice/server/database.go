@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -65,6 +66,30 @@ func (r Repository) SaveCommunalProblem(communalProblem *model.CommunalProblem) 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	defer cancel()
+
+	foundedToken, _ := r.CheckToken(ctx)
+
+	parsedToken, err := jwt.Parse(foundedToken, func(token *jwt.Token) (interface{}, error) {
+		return []byte("gosecretkey"), nil
+	})
+
+	claims, ok := parsedToken.Claims.(jwt.MapClaims)
+
+	if !ok {
+		return nil, errors.New("Invalid token")
+	}
+
+	userRole := ""
+
+	for key, val := range claims {
+		if key == "role" {
+			userRole += val.(string)
+		}
+	}
+
+	if userRole == "" {
+		return nil, errors.New("Unauthorized")
+	}
 
 	result, err := collection.InsertOne(ctx, communalProblem)
 
@@ -161,4 +186,30 @@ func (r Repository) AddReport(id string, report string) error {
 		fmt.Println(err)
 	}
 	return nil
+}
+
+func (r Repository) CheckToken(ctx context.Context) (string, error) {
+	authClient, _ := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://auth-db:27017"))
+	collection := authClient.Database("AUTH").Collection("token")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	result, err := collection.Find(ctx, bson.D{})
+	if err != nil {
+		panic(err)
+	}
+
+	var tokens []model.Token
+
+	if err = result.All(ctx, &tokens); err != nil {
+		fmt.Println(err)
+	}
+	println("TOKENI")
+	println(tokens)
+	println("TOKENI")
+
+	var foundedToken = tokens[0].Token
+	return foundedToken, nil
 }
