@@ -44,7 +44,7 @@ export class AuthService {
           this.tokenService.setToken(tokenObject);
           if (tokenValue.redirectUrl) {
             window.open(tokenValue.redirectUrl);
-            window.location.href = 'about:blank';
+            window.location.reload();
           }
         } else {
           console.log("Invalid token");
@@ -70,13 +70,11 @@ export class AuthService {
   }
 
   public logoutAuth(): Observable<any> {
-    return this.httpClient.get('http://localhost:8000/api/auth/logout');
+    return this.httpClient.post(`${this.APIurl}/logout`, {});
   }
 
-  public test(userid: string, token: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.httpClient.get(`https://dev-xd1sqt4xwi2fj3r4.us.auth0.com/api/v2/users/${userid}`, { headers });
+  public authenticated(): Observable<any> {
+    return this.httpClient.get(`${this.APIurl}/authenticated`);
   }
+
 }

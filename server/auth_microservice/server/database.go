@@ -122,6 +122,21 @@ func Login(user *model.Auth) (string, string, error) {
 	return jwtToken, dbUser.Role, nil
 }
 
+func Authenticated() (model.Token, error) {
+	collection := client.Database("AUTH").Collection("token")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	var token model.Token
+	err := collection.FindOne(ctx, bson.D{}).Decode(&token)
+	if err != nil {
+		fmt.Println("error")
+	}
+	return token, nil
+}
+
 func RegisterUser(user *model.Auth) (*mongo.InsertOneResult, error) {
 	authResult, err := WriteUserIntoDatabase(user)
 

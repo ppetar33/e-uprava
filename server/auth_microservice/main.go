@@ -31,6 +31,7 @@ func main() {
 	router.HandleFunc("/api/auth/login", Login).Methods("POST")
 	router.HandleFunc("/api/auth/register", Register).Methods("POST")
 	router.HandleFunc("/api/auth/logout", Logout).Methods("POST")
+	router.HandleFunc("/api/auth/authenticated", Authenticated).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 

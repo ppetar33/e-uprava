@@ -6,7 +6,8 @@
                     <li [class.active]="i === activeIndex" class="nav__list-item draw meet" (click)="goToPage(item, i)">{{ item }}</li>
                 </ul>
             </div>
-            <button type="button" class="nav__login-btn" (click)="openLoginDialog()">LOGIN</button>
+            <button *ngIf="!isLoggedin" type="button" class="nav__login-btn" (click)="openLoginDialog()">LOGIN</button>
+            <button *ngIf="isLoggedin" type="button" class="nav__login-btn" (click)="logout()">LOG OUT</button>
         </div>
     </div>
 </div>
