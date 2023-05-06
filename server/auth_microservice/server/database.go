@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/oauth2"
+	"log"
 	"time"
 )
 
@@ -229,6 +230,7 @@ func WriteUserIntoDatabase(user *model.Auth) (*mongo.InsertOneResult, error) {
 	auth.Jmbg = user.Jmbg
 	auth.Email = user.Email
 	auth.Role = user.Role
+	auth.Municipality = user.Municipality
 	auth.Court = user.Court
 
 	resultAuth, _ := collection.InsertOne(ctx, auth)
@@ -255,6 +257,60 @@ func Ping() {
 	}
 
 	fmt.Println(databases)
+}
+
+func GetJudges() ([]model.Auth, error) {
+	collection := client.Database("AUTH").Collection("user")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	filter := bson.D{{"role", "judge"}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var users []model.Auth
+	if err = cursor.All(ctx, &users); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(users)
+
+	return users, nil
+}
+
+func GetListOfMunicipality() ([]string, error) {
+	var allMunicipality []string
+	users, err := GetJudges()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, user := range users {
+		allMunicipality = append(allMunicipality, user.Municipality)
+	}
+
+	finalList := RemoveDuplicateStr(allMunicipality)
+
+	return finalList, nil
+}
+
+func GetJudgeByMunicipality(municipality string) ([]model.Auth, error) {
+	collection := client.Database("AUTH").Collection("user")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	filter := bson.M{"role": "judge", "municipality": municipality}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var users []model.Auth
+	if err = cursor.All(ctx, &users); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(users)
+
+	return users, nil
 }
 
 func Disconnect(ctx context.Context) error {

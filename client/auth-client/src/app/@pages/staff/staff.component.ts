@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserOpenData } from 'src/app/@api/model/user-open-data.model';
-import { User } from 'src/app/@api/model/user.model';
+import { OpenDataService } from 'src/app/@api/services/open-data.service';
 import { UserService } from 'src/app/@api/services/user.service';
 
 @Component({
@@ -10,33 +10,15 @@ import { UserService } from 'src/app/@api/services/user.service';
 })
 export class StaffComponent implements OnInit {
 
-  isJudgesSelected: boolean = false;
-
   copsList: Array<UserOpenData> = [];
   judgesList: Array<UserOpenData> = [];
+  municipalityList: Array<string> = [];
 
-  constructor(private userService : UserService) { }
+  constructor(private userService : UserService, private openDataService: OpenDataService) { }
 
   ngOnInit(): void {
-    this.getAllCops();
     this.getAllJudges();
-  }
-
-  clickJudges():void{
-    console.log("Judges")
-    this.isJudgesSelected = true
-  }
-
-  clickCops():void{
-    console.log("Cops")
-    this.isJudgesSelected = false
-  }
-
-
-  private getAllCops(): void {
-    this.userService.getAllCops().subscribe(res => {
-      this.copsList = res;
-    })
+    this.getAllMunicipality();
   }
 
   private getAllJudges(): void {
@@ -45,6 +27,24 @@ export class StaffComponent implements OnInit {
     })
   }
 
+  private getAllMunicipality(): void {
+    this.openDataService.getAllMunicipality().subscribe(res => {
+      this.municipalityList = res;
+    })
+  }
 
+  clickMunicipality(municipality: string):void{
+    this.userService.getJudgesByMunicipality(municipality).subscribe(res => {
+      this.judgesList = res;
+    })
+  }
 
+  clickAllMunicipality():void{
+    this.getAllJudges();
+  }
+
+  exportexcel(): void
+  {
+    this.openDataService.exportToExcel(this.judgesList, 'Judges-list.xlsx');
+  }
 }

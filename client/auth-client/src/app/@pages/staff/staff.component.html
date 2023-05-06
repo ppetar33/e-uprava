@@ -7,21 +7,13 @@
             <div class="home__content">
                 <ul class="nav justify-content-center">
                     <li class="nav-item">
-                      <a class="nav-link active pointer" (click)="clickCops()">Communal cops</a>
+                      <button (click)="exportexcel()" class="buttonExport">Export Judges to Excel</button>    
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link pointer" (click)="clickJudges()">Judges</a>
-                    </li>
-                  </ul>
+                </ul>
 
-                  <div id="container">        
+                  <div id="container">    
                     <section class="staff-section">
-                        <div *ngIf="!isJudgesSelected">
-                            <div *ngFor="let user of copsList">
-                                <app-staff-card [user]="user"></app-staff-card>
-                            </div>
-                        </div>
-                        <div *ngIf="isJudgesSelected">
+                        <div>
                             <div *ngFor="let user of judgesList">
                                 <app-staff-card [user]="user"></app-staff-card>
                             </div>
@@ -33,10 +25,10 @@
                             <button type="button" class="list-group-item list-group-item-action active">
                                 Municipality
                             </button>
-                            <button type="button" class="list-group-item list-group-item-action">Novi Sad</button>
-                            <button type="button" class="list-group-item list-group-item-action">Belgrade</button>
-                            <button type="button" class="list-group-item list-group-item-action">Nis</button>
-                            <button type="button" class="list-group-item list-group-item-action">Subotica</button>
+                            <button type="button" class="list-group-item list-group-item-action" (click)="clickAllMunicipality()">All municipality</button>
+                            <div *ngFor="let municipality of municipalityList">
+                                <button type="button" class="list-group-item list-group-item-action" (click)="clickMunicipality(municipality)">{{municipality}}</button>
+                            </div>
                           </div>
                     </section>
                 </div> 

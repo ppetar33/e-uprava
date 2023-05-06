@@ -180,6 +180,63 @@ func Register(response http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func GetJudges(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	judges, err := server.GetJudges()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if judges == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(judges)
+		}
+	}
+}
+
+func GetListOfMunicipality(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	municipality, err := server.GetListOfMunicipality()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if municipality == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(municipality)
+		}
+	}
+}
+
+func GetJudgeByMunicipality(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(request)
+	municipality, ok := vars["municipality"]
+	if !ok {
+		json.NewEncoder(response).Encode(`Municipality is missing in parameters`)
+	}
+
+	judges, err := server.GetJudgeByMunicipality(municipality)
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if judges == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(judges)
+		}
+	}
+}
+
 func Logout(response http.ResponseWriter, request *http.Request) {
 
 	_, err := server.Logout()

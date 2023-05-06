@@ -28,6 +28,9 @@
   .home__content {
     position: relative;
     margin-top: 100px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 10px;
   }
 
   .nav {
@@ -55,4 +58,12 @@
 
   .pointer {
       cursor: pointer;
+    }
+
+    .buttonExport {
+      color: black;
+      cursor: pointer;
+      font-size: large;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
