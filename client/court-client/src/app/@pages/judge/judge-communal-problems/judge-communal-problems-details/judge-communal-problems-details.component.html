@@ -1,0 +1,36 @@
+<div class="problem-details">
+    <div class="problem-details__wrapper">
+        <div class="problem-details__container">
+            <div class="problem-details__header">
+                <app-header [back]="'judge/problems'"></app-header>
+            </div>
+            <div class="problem-details__content container">
+                <div class="spinner-wrapper" *ngIf="isLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>     
+                <div class="problem-details__card" *ngIf="!isLoading">
+                    <mat-card class="mat-card">
+                        <mat-card-title class="mat-card__title">{{ communalProblem.title }}</mat-card-title>
+                        <p *ngIf="communalProblem.anonymous" class="mat-card__anonymous"><i class="bi bi-person-fill-slash"></i></p>
+                        <div class="mat-card__img-wrapper">
+                            <img class="mat-card__img" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"/>
+                        </div>
+                        <mat-card-content class="mat-card__content">
+                            <p class="mat-card__txt">{{ communalProblem.description }}</p>
+                        </mat-card-content>
+                        <mat-card-actions class="mat-card__actions" *ngIf="communalProblem.accepted == null">
+                          <button type="button" class="mat-card__btn mat-card__btn-primary" mat-button (click)="accept()">Accept</button>
+                          <button type="button" class="mat-card__btn mat-card__btn-close" mat-button (click)="decline()">Decline</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="problem-details__footer">
+                <app-footer></app-footer>
+            </div>
+        </div>
+    </div>
+    <app-toast-bar [message]="errorMessage" [status]="'failure'" [duration]="2" *ngIf="errorMessage"></app-toast-bar>
+</div>

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/ppetar33/e-uprava/auth_microservice/model"
 	"github.com/ppetar33/e-uprava/auth_microservice/server"
@@ -57,6 +58,79 @@ func Login(response http.ResponseWriter, request *http.Request) {
 		}
 
 		json.NewEncoder(response).Encode(loginResponse)
+	}
+}
+
+func GetUserById(response http.ResponseWriter, r *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+	if !ok {
+		json.NewEncoder(response).Encode(`ID is missing in parameters`)
+		return
+	}
+
+	user := server.GetUserById(id)
+
+	if user == (model.Auth{}) {
+		json.NewEncoder(response).Encode(`Doesn't exist user with this id`)
+		return
+	} else {
+		json.NewEncoder(response).Encode(user)
+	}
+}
+
+func GetUsers(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	users, err := server.GetAllUsers()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if users == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(users)
+		}
+	}
+}
+
+func GetAllJudges(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	users, err := server.GetAllJudges()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if users == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(users)
+		}
+	}
+}
+
+func Authenticated(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	authenticated, err := server.Authenticated()
+
+	fmt.Println(authenticated)
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if authenticated == (model.Token{}) {
+			json.NewEncoder(response).Encode(`Not authenticated`)
+		} else {
+			json.NewEncoder(response).Encode(authenticated)
+		}
 	}
 }
 
@@ -160,5 +234,15 @@ func GetJudgeByMunicipality(response http.ResponseWriter, request *http.Request)
 		} else {
 			json.NewEncoder(response).Encode(judges)
 		}
+	}
+}
+
+func Logout(response http.ResponseWriter, request *http.Request) {
+
+	_, err := server.Logout()
+	println("Odjavljivanje")
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
 	}
 }

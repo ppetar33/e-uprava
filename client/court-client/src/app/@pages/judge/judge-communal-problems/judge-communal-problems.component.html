@@ -9,7 +9,7 @@
                     <div class="spinner-border text-primary" role="status">
                         <span class="sr-only"></span>
                     </div>
-                </div>
+                </div>                
                 <div class="problem__no-data" *ngIf="!isLoading && this.dataSource.data.toString() === '[]'">
                     <img class="problem__no-data-img" src="../../../../assets/images/no-data.png" alt="">
                     <p class="problem__no-data-txt">There is no communal problems assign to you at this moment, sit tight.</p>
@@ -25,7 +25,6 @@
                             </mat-form-field>
                           </div>
                         </div>
-                          
                         <div class="problem__table mat-elevation-z8">
                           <mat-table [dataSource]="dataSource" matSort id="problem-table">
                             <ng-container matColumnDef="title">
@@ -41,6 +40,11 @@
                             <ng-container matColumnDef="address">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> ADDRESS </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.address}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="view">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> VIEW </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> <a matTooltip="View communal problem details page" (click)="goToDetails(row.id)"> <i class="bi bi-arrow-right-circle-fill color-blue"></i> </a> </mat-cell>
                             </ng-container>
                         
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

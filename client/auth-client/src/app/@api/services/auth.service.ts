@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
@@ -44,7 +44,7 @@ export class AuthService {
           this.tokenService.setToken(tokenObject);
           if (tokenValue.redirectUrl) {
             window.open(tokenValue.redirectUrl);
-            window.location.href = 'about:blank';
+            window.location.reload();
           }
         } else {
           console.log("Invalid token");
@@ -64,4 +64,17 @@ export class AuthService {
     localStorage.clear();
     this.router.navigate(['']);
   }
+
+  public loginAuth(): Observable<any> {
+    return this.httpClient.get('http://localhost:8000/api/auth/login');
+  }
+
+  public logoutAuth(): Observable<any> {
+    return this.httpClient.post(`${this.APIurl}/logout`, {});
+  }
+
+  public authenticated(): Observable<any> {
+    return this.httpClient.get(`${this.APIurl}/authenticated`);
+  }
+
 }

@@ -33,6 +33,11 @@ func main() {
 	router.HandleFunc("/api/auth/get-judges", GetJudges).Methods("GET")
 	router.HandleFunc("/api/auth/get-municipality", GetListOfMunicipality).Methods("GET")
 	router.HandleFunc("/api/auth/get-judges/{municipality}", GetJudgeByMunicipality).Methods("GET")
+	router.HandleFunc("/api/auth/logout", Logout).Methods("POST")
+	router.HandleFunc("/api/auth/authenticated", Authenticated).Methods("GET")
+	router.HandleFunc("/api/auth/user/{id}", GetUserById).Methods("GET")
+	router.HandleFunc("/api/auth/users", GetUsers).Methods("GET")
+	router.HandleFunc("/api/auth/judges", GetAllJudges).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 

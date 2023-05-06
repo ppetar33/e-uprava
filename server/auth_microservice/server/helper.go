@@ -18,13 +18,14 @@ func GetHash(pwd []byte) string {
 
 var SECRET_KEY = []byte("gosecretkey")
 
-func GenerateJWT(username string, role string) (string, error) {
+func GenerateJWT(username string, role string, id string) (string, error) {
 	var err error
 	os.Setenv("ACCESS_SECRET", string(SECRET_KEY))
 	atClaims := jwt.MapClaims{}
 	atClaims["authorized"] = true
 	atClaims["username"] = username
 	atClaims["role"] = role
+	atClaims["id"] = id
 	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	token, err := at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))

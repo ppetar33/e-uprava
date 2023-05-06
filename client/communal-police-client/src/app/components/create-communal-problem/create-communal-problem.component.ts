@@ -4,6 +4,9 @@ import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { CommunalProblem } from 'src/app/model/communal-problem';
 import { CommunalPoliceServiceService } from 'src/app/services/communal-police-service.service';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireStorageReference } from '@angular/fire/compat/storage';
+import { AngularFireUploadTask } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-create-communal-problem',
@@ -18,7 +21,8 @@ export class CreateCommunalProblemComponent implements OnInit {
   constructor(
     private router: Router,
     private storage: AngularFireStorage,
-    private service: CommunalPoliceServiceService
+    private service: CommunalPoliceServiceService,
+    private afStorage: AngularFireStorage,
   ) { 
     this.imageEvent = null
 
@@ -65,25 +69,32 @@ export class CreateCommunalProblemComponent implements OnInit {
 
   }
 
-  uploadFile(files: FileList) {
-    const file = files.item(0);
+  createCommunalProblem(event: any) {
+    if (this.imageEvent == null) {
+      this.onSubmit(event)
+      }
+     else {
+      this.uploadFile(event);
+    }
+  }
+
+  uploadFile(event: any) {
     const path = 'my-file-name';
     const fileRef = this.storage.ref(path);
-    const task = fileRef.put(file);
+    const task = fileRef.put(this.imageEvent.target.files[0]);
 
-    // observe percentage changes
     task.percentageChanges().subscribe(percent => {
       console.log(percent);
     });
 
-    // get notified when the download URL is available
     task.snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe(downloadURL => {
           console.log('File available at: ', downloadURL);
+        this.communalProblema.imageUrl = downloadURL
+        this.onSubmit(event)
         });
       })
     ).subscribe();
   }
-
 }

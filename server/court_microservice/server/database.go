@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/ppetar33/e-uprava/court_microservice/model"
@@ -9,6 +11,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"io"
+	"net/http"
 	"time"
 )
 
@@ -44,8 +48,11 @@ func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.I
 		return nil, err
 	}
 	for _, problem := range communalProblems {
-		numCommunalProblemsPerJudge[problem.Judgeid]++
+		numCommunalProblemsPerJudge[problem.JudgeId]++
 	}
+
+	fmt.Println(judges)
+	fmt.Println(communalProblems)
 
 	minNumCommunalProblems := len(communalProblems)
 	minJudge := judges[0]
@@ -56,7 +63,7 @@ func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.I
 		}
 	}
 
-	communalProblem.Judgeid = minJudge.Id
+	communalProblem.JudgeId = minJudge.Id
 	communalProblem.Accepted = nil
 
 	_, err = AddCommunalProblem(communalProblem)
@@ -105,7 +112,7 @@ func GetCommunalProblemsByJudge(judgeId string) ([]model.CommunalProblem, error)
 
 	defer cancel()
 
-	filter := bson.D{{"judgeid", judgeId}}
+	filter := bson.D{{"judgeId", judgeId}}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
@@ -186,20 +193,36 @@ func WriteIntoJudges(judge *model.Judge) (*mongo.InsertOneResult, error) {
 }
 
 func GetAllJudges() ([]model.Judge, error) {
-	collection := client.Database("JUDGE").Collection("judges")
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-
-	defer cancel()
-
-	cursor, err := collection.Find(ctx, bson.D{})
+	client := http.Client{
+		Timeout: time.Second * 60000,
+	}
+	path := "http://auth-microservice:8080/api/auth/judges"
+	req, err := http.NewRequest("GET", path, nil)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("error status: " + resp.Status)
+	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
 	var judges []model.Judge
-	if err = cursor.All(ctx, &judges); err != nil {
-		fmt.Println(err)
+	errUnmarshal := json.Unmarshal(bodyBytes, &judges)
+	if errUnmarshal != nil {
+		return nil, errUnmarshal
 	}
+
 	return judges, nil
 }
 

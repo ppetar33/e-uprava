@@ -7,6 +7,7 @@ import { JudgeNotFoundComponent } from './@pages/judge/judge-not-found/judge-not
 import { JudgeComponent } from './@pages/judge/judge.component';
 import { NotFoundComponent } from './@pages/not-found/not-found.component';
 import { JudgeCommunalProblemsComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems.component';
+import { JudgeCommunalProblemsDetailsComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems-details/judge-communal-problems-details.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,16 @@ const routes: Routes = [
       },
       {
         path: 'problems',
-        component: JudgeCommunalProblemsComponent
+        children: [
+          {
+            path: '',
+            component: JudgeCommunalProblemsComponent
+          },
+          {
+            path: ':id',
+            component: JudgeCommunalProblemsDetailsComponent
+          }
+        ]
       },
       {
         path: '**',
