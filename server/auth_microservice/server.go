@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gorilla/mux"
 	"github.com/ppetar33/e-uprava/auth_microservice/model"
 	"github.com/ppetar33/e-uprava/auth_microservice/server"
 	"mime"
@@ -102,5 +103,62 @@ func Register(response http.ResponseWriter, request *http.Request) {
 			return
 		}
 		json.NewEncoder(response).Encode(authResult)
+	}
+}
+
+func GetJudges(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	judges, err := server.GetJudges()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if judges == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(judges)
+		}
+	}
+}
+
+func GetListOfMunicipality(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	municipality, err := server.GetListOfMunicipality()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if municipality == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(municipality)
+		}
+	}
+}
+
+func GetJudgeByMunicipality(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(request)
+	municipality, ok := vars["municipality"]
+	if !ok {
+		json.NewEncoder(response).Encode(`Municipality is missing in parameters`)
+	}
+
+	judges, err := server.GetJudgeByMunicipality(municipality)
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if judges == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(judges)
+		}
 	}
 }

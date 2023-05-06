@@ -8,15 +8,16 @@ import { UserOpenData } from '../model/user-open-data.model';
 })
 export class UserService {
 
-  private readonly path = "http://localhost:8000/api/open-data";
+  private readonly path = "http://localhost:8000/api/auth";
 
   constructor(private http: HttpClient) { }
 
-  getAllCops():Observable<UserOpenData[]>{
-    return this.http.get<UserOpenData[]>(this.path+`/get-all-cops`);
+  getAllJudges():Observable<UserOpenData[]>{
+    return this.http.get<UserOpenData[]>(this.path + `/get-judges`);
   }
 
-  getAllJudges():Observable<UserOpenData[]>{
-    return this.http.get<UserOpenData[]>(this.path+`/get-all-judges`);
+  getJudgesByMunicipality(municipality: string):Observable<UserOpenData[]>{
+    return this.http.get<UserOpenData[]>(this.path + `/get-judges/${municipality}`);
   }
+
 }

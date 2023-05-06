@@ -10,6 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"log"
+	"strconv"
 	"time"
 )
 
@@ -101,4 +103,65 @@ func (r Repository) GetAllCommunalProblems() ([]model.CommunalProblem, error) {
 	}
 
 	return communalProblems, nil
+}
+
+func (r Repository) GetCommunalProblemByMunicipality(municipality string) ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
+	filter := bson.D{{"municipality", municipality}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var users []model.CommunalProblem
+	if err = cursor.All(ctx, &users); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(users)
+
+	return users, nil
+}
+
+func (r Repository) GetListOfMunicipality() ([]string, error) {
+	var allMunicipality []string
+	communalProblems, err := r.GetAllCommunalProblems()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, problem := range communalProblems {
+		allMunicipality = append(allMunicipality, problem.Municipality)
+	}
+
+	finalList := RemoveDuplicateStr(allMunicipality)
+
+	return finalList, nil
+}
+
+func (r Repository) GetStatisticData() (model.StatisticData, error) {
+	anonymous := 0
+	public := 0
+
+	communalProblems, err := r.GetAllCommunalProblems()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, problem := range communalProblems {
+		if problem.Anonymous == true {
+			anonymous += 1
+		} else {
+			public += 1
+		}
+	}
+
+	statisticData := model.StatisticData{
+		TotalProblems: strconv.Itoa(len(communalProblems)),
+		Anonymous:     strconv.Itoa(anonymous),
+		Public:        strconv.Itoa(public),
+	}
+
+	return statisticData, nil
 }
