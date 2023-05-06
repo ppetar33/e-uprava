@@ -95,7 +95,7 @@ func Login(user *model.Auth) (string, string, error) {
 		return "Wrong Credentials", "", nil
 	}
 
-	jwtToken, errToken := GenerateJWT(user.Jmbg, dbUser.Role)
+	jwtToken, errToken := GenerateJWT(user.Jmbg, dbUser.Role, dbUser.Id)
 	if errToken != nil {
 		return `{"message":"` + errToken.Error() + `"}`, "", nil
 	}
@@ -135,6 +135,59 @@ func Authenticated() (model.Token, error) {
 		fmt.Println("error")
 	}
 	return token, nil
+}
+
+func GetUserById(id string) model.Auth {
+	collection := client.Database("AUTH").Collection("user")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	var user model.Auth
+	err := collection.FindOne(ctx, bson.D{{"id", id}}).Decode(&user)
+	if err != nil {
+		fmt.Println("Doesn't exist user with this id")
+	}
+	return user
+}
+
+func GetAllUsers() ([]model.Auth, error) {
+	collection := client.Database("AUTH").Collection("user")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	cursor, err := collection.Find(ctx, bson.D{})
+	if err != nil {
+		panic(err)
+	}
+	var users []model.Auth
+	if err = cursor.All(ctx, &users); err != nil {
+		fmt.Println(err)
+	}
+	return users, nil
+}
+
+func GetAllJudges() ([]model.Auth, error) {
+	collection := client.Database("AUTH").Collection("user")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"role", "judge"}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var users []model.Auth
+	if err = cursor.All(ctx, &users); err != nil {
+		fmt.Println(err)
+	}
+	return users, nil
 }
 
 func RegisterUser(user *model.Auth) (*mongo.InsertOneResult, error) {

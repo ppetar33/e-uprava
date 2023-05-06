@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService as AuthenticationService} from 'src/app/@api/services/auth.service';
 import { JudgeService } from 'src/app/@api/services/judge.service';
 import { AuthService } from '@auth0/auth0-angular';
+import { TokenService } from 'src/app/@api/services/token.service';
 
 @Component({
   selector: 'app-judge-communal-problems',
@@ -19,24 +20,32 @@ export class JudgeCommunalProblemsComponent implements OnInit {
   public dataSource!: MatTableDataSource<any>;
   public errorMessage: string = '';
   public isLoggedin: boolean = false;
+  public user: any;
 
   constructor(
     private judgeService: JudgeService,
     private authService: AuthenticationService,
     private router: Router,
     private dialog: MatDialog,
-    public auth: AuthService,
+    private tokenService: TokenService
   ) { 
     localStorage.setItem('nav', JSON.stringify(1));
   }
 
   public ngOnInit(): void {
     this.isLoading = true;
-    this.getCommunalProblems();
+    this.getLoggedinUser(this.tokenService.decodeToken(JSON.stringify(localStorage.getItem('token'))));
+  }
+
+  public getLoggedinUser(token: any): void {
+    this.authService.getUserById(token.id).subscribe((resp) => {
+      this.user = resp;
+      this.getCommunalProblems();
+    })
   }
 
   public getCommunalProblems(): void {
-    this.judgeService.getJudgeCommunalProblems('7a5745f4-6320-4d2f-af20-2d768208ccc6').subscribe({
+    this.judgeService.getJudgeCommunalProblems(this.user.id).subscribe({
       next: (response) => {
         this.dataSource = new MatTableDataSource(response);
         this.dataSource.sort = this.sort;
