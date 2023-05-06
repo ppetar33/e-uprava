@@ -8,3 +8,13 @@
   width: 50px;
   cursor: pointer;
 }
+
+.header__back {
+  padding-right: 30px;
+  font-size: 18px;
+  cursor: pointer;
+
+  .bi {
+    margin-right: 5px;
+  }
+}

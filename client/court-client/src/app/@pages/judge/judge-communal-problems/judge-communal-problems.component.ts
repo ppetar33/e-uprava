@@ -16,7 +16,7 @@ import { TokenService } from 'src/app/@api/services/token.service';
 export class JudgeCommunalProblemsComponent implements OnInit {
   public isLoading: boolean = false;
   @ViewChild(MatSort) sort!: MatSort;
-  public displayedColumns = ['title', 'description', 'address'];
+  public displayedColumns = ['title', 'description', 'address', 'view'];
   public dataSource!: MatTableDataSource<any>;
   public errorMessage: string = '';
   public isLoggedin: boolean = false;
@@ -73,5 +73,9 @@ export class JudgeCommunalProblemsComponent implements OnInit {
     value = value.trim();
     value = value.toLowerCase();
     this.dataSource.filter = value;
+  }
+
+  public goToDetails(id: string): void {
+    this.router.navigate([`judge/problems/${id}`])
   }
 }

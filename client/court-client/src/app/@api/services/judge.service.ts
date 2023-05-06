@@ -16,4 +16,16 @@ export class JudgeService {
   public getJudgeCommunalProblems(judgeId: string): Observable<any> {
     return this.httpClient.get(`${this.APIurl}/communal-problem/judge/${judgeId}`);
   }
+
+  public getCommunalProblmeById(id: string): Observable<any> {
+    return this.httpClient.get(`${this.APIurl}/communal-problem/id/${id}`);
+  }
+
+  public accept(id: string): Observable<any> {
+    return this.httpClient.put(`${this.APIurl}/communal-problem/accept/${id}`, {});
+  }
+
+  public decline(id: string): Observable<any> {
+    return this.httpClient.put(`${this.APIurl}/communal-problem/decline/${id}`, {});
+  }
 }

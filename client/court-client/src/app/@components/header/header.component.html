@@ -1,10 +1,13 @@
 <div class="header">
     <div class="header__wrapper">
         <div class="header__container">
+            <div class="header__back" *ngIf="back" (click)="goBack()">
+                <p class="header__back-txt"> <i class="bi bi-arrow-left-circle-fill arrow-left"></i> Back</p>
+            </div>
             <div class="header__logo" (click)="goToHome()">
                 <img class="header__logo-img" src="../../../assets/images/logo.jpeg" alt="">
             </div>
-            <div class="header__nav">
+            <div class="header__nav" *ngIf="!back">
                 <app-nav></app-nav>
             </div>
         </div>

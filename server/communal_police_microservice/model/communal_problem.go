@@ -13,4 +13,5 @@ type CommunalProblem struct {
 	Anonymous    bool   `json:"anonymous" bson:"anonymous"`
 	Date         string `json:"date" bson:"date"`
 	Municipality string `json:"municipality" bson:"municipality"`
+	Accepted     *bool  `json:"accepted" bson:"accepted"`
 }
