@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  @Input('back') back: string = '';
+
   constructor(
     private router: Router
   ) { }
@@ -18,4 +20,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['home']);
   }
 
+  public goBack(): void {
+    this.router.navigate([this.back]);
+  }
 }

@@ -21,6 +21,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './@api/interceptors/jwt-interceptor';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthModule } from '@auth0/auth0-angular';
+import { JudgeCommunalProblemsDetailsComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems-details/judge-communal-problems-details.component';
+import { JudgeCommunalProblemsHearingDialogComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems-hearing-dialog/judge-communal-problems-hearing-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { AuthModule } from '@auth0/auth0-angular';
     JudgeNotFoundComponent,
     JudgeNoAccessComponent,
     ToastBarComponent,
-    JudgeCommunalProblemsComponent
+    JudgeCommunalProblemsComponent,
+    JudgeCommunalProblemsDetailsComponent,
+    JudgeCommunalProblemsHearingDialogComponent
   ],
   imports: [ 
     BrowserModule,

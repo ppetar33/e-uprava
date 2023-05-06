@@ -1,0 +1,97 @@
+.problem-details,
+.problem-details__wrapper,
+.problem-details__container,
+.problem-details__content {
+  width: 100%;
+  height: 100%;
+}
+
+.problem-details__header {
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  z-index: 1;
+}
+
+.problem-details__footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.problem-details__content {
+  position: relative;
+  padding-top: 150px;
+
+  .spinner-wrapper {
+    margin-top: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.mat-card__img {
+  width: 50%;
+  padding-top: 50px;
+  border-radius: 6px;
+}
+
+.mat-card__actions {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+  padding-bottom: 20px !important;
+}
+
+.mat-card {
+  text-align: center;
+  width: fit-content;
+}
+
+.mat-card__img-wrapper {
+  display: grid;
+  place-items: center;
+}
+
+.problem-details__card {
+  display: grid;
+  place-items: center;
+}
+
+.mat-card__btn {
+  color: white;
+  transition: all ease-in-out 0.3s;
+}
+
+.mat-card__btn-primary {
+  background: #0a335d;
+}
+
+.mat-card__btn-close {
+  background: rgb(120, 9, 9);
+}
+
+.mat-card__btn-primary:hover {
+  background: #0d4175;
+  transition: all ease-in-out 0.3s;
+}
+
+.mat-card__btn-close:hover {
+  background: rgb(149, 11, 11);
+  transition: all ease-in-out 0.3s;
+}
+
+.mat-card__title {
+  padding-top: 10px;
+}
+
+.mat-card__anonymous {
+  float: right;
+  margin-top: -30px;
+  font-size: 30px;
+}

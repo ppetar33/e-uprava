@@ -48,8 +48,11 @@ func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.I
 		return nil, err
 	}
 	for _, problem := range communalProblems {
-		numCommunalProblemsPerJudge[problem.Judgeid]++
+		numCommunalProblemsPerJudge[problem.JudgeId]++
 	}
+
+	fmt.Println(judges)
+	fmt.Println(communalProblems)
 
 	minNumCommunalProblems := len(communalProblems)
 	minJudge := judges[0]
@@ -60,7 +63,7 @@ func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.I
 		}
 	}
 
-	communalProblem.Judgeid = minJudge.Id
+	communalProblem.JudgeId = minJudge.Id
 	communalProblem.Accepted = nil
 
 	_, err = AddCommunalProblem(communalProblem)
@@ -109,7 +112,7 @@ func GetCommunalProblemsByJudge(judgeId string) ([]model.CommunalProblem, error)
 
 	defer cancel()
 
-	filter := bson.D{{"judgeid", judgeId}}
+	filter := bson.D{{"judgeId", judgeId}}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {

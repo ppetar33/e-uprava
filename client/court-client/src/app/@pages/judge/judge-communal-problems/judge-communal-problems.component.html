@@ -41,6 +41,11 @@
                               <mat-header-cell *matHeaderCellDef mat-sort-header> ADDRESS </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.address}} </mat-cell>
                             </ng-container>
+
+                            <ng-container matColumnDef="view">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> VIEW </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> <a matTooltip="View communal problem details page" (click)="goToDetails(row.id)"> <i class="bi bi-arrow-right-circle-fill color-blue"></i> </a> </mat-cell>
+                            </ng-container>
                         
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayedColumns;">
