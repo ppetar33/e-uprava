@@ -33,4 +33,7 @@ export class AuthService {
     return this.httpClient.post(`${this.APIurl}/logout`, {});
   }
 
+  public getUserById(id: string): Observable<any> {
+    return this.httpClient.get(`${this.APIurl}/user/${id}`);
+  }
 }

@@ -35,6 +35,7 @@ export class NavComponent implements OnInit {
         this.isLoggedin = true;
       } else {
         this.isLoggedin = false;
+        window.location.href = "http://localhost:4200/home"
       }
     })
   }
