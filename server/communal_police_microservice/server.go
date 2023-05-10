@@ -177,7 +177,7 @@ func (h Handler) AddReport(response http.ResponseWriter, request *http.Request) 
 		return
 	}
 
-	err := h.Repo.AddReport(communalProblem.Id, communalProblem.ReportId)
+	err := h.Repo.AddReport(communalProblem.Id, communalProblem.Report)
 
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusBadRequest)
@@ -186,3 +186,109 @@ func (h Handler) AddReport(response http.ResponseWriter, request *http.Request) 
 
 	json.NewEncoder(response).Encode(`Successfully added report!`)
 }
+
+func (h Handler) ImproveProblem(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	communalProblem, errDecodeBody := DecodeBodyCommunalProblem(request.Body)
+
+	if errDecodeBody != nil {
+		http.Error(response, errDecodeBody.Error(), http.StatusBadRequest)
+		log.Println(request.RemoteAddr + " " + request.Method + " " + request.RequestURI + " " + strconv.Itoa(http.StatusBadRequest))
+		return
+	}
+
+	err := h.Repo.ImproveProblem(communalProblem.Id, communalProblem.Improvement)
+
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	json.NewEncoder(response).Encode(`Successfully added report!`)
+}
+
+func (h Handler) AssignProblem(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	communalProblem, errDecodeBody := DecodeBodyCommunalProblem(request.Body)
+
+	if errDecodeBody != nil {
+		http.Error(response, errDecodeBody.Error(), http.StatusBadRequest)
+		log.Println(request.RemoteAddr + " " + request.Method + " " + request.RequestURI + " " + strconv.Itoa(http.StatusBadRequest))
+		return
+	}
+
+	err := h.Repo.AssignCommunalProblem(communalProblem.Id)
+
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	json.NewEncoder(response).Encode(`Successfully added report!`)
+}
+
+func (h Handler) SentToCourt(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	communalProblem, errDecodeBody := DecodeBodyCommunalProblem(request.Body)
+
+	if errDecodeBody != nil {
+		http.Error(response, errDecodeBody.Error(), http.StatusBadRequest)
+		log.Println(request.RemoteAddr + " " + request.Method + " " + request.RequestURI + " " + strconv.Itoa(http.StatusBadRequest))
+		return
+	}
+
+	err := h.Repo.SentToCourt(communalProblem.Id)
+
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	json.NewEncoder(response).Encode(`Successfully sent!`)
+}
+
+func (h Handler) SolveCommunalProblem(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	communalProblem, errDecodeBody := DecodeBodyCommunalProblem(request.Body)
+
+	if errDecodeBody != nil {
+		http.Error(response, errDecodeBody.Error(), http.StatusBadRequest)
+		log.Println(request.RemoteAddr + " " + request.Method + " " + request.RequestURI + " " + strconv.Itoa(http.StatusBadRequest))
+		return
+	}
+
+	err := h.Repo.SolveCommunalProblem(communalProblem.Id)
+
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	json.NewEncoder(response).Encode(`Successfully added report!`)
+}
+
+//func (h Handler) UpdateCommunalProblem(response http.ResponseWriter, request *http.Request) {
+//	response.Header().Set("Content-Type", "application/json")
+//
+//	communalProblem, errDecodeBody := DecodeBodyCommunalProblem(request.Body)
+//
+//	if errDecodeBody != nil {
+//		http.Error(response, errDecodeBody.Error(), http.StatusBadRequest)
+//		log.Println(request.RemoteAddr + " " + request.Method + " " + request.RequestURI + " " + strconv.Itoa(http.StatusBadRequest))
+//		return
+//	}
+//
+//
+//	err := h.Repo.UpdateCommunalProblem(communalProblem.Id,communalProblem )
+//
+//	if err != nil {
+//		http.Error(response, err.Error(), http.StatusBadRequest)
+//		return
+//	}
+//
+//	json.NewEncoder(response).Encode(`Successfully added report!`)
+//}
