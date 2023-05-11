@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +17,7 @@ export class JudgeCommunalProblemsHearingDialogComponent implements OnInit {
   public user: any;
   public userId: string = '';
   public communalProblem: any;
+  public date: any;
 
   constructor(
     public dialogRef: MatDialogRef<JudgeCommunalProblemsHearingDialogComponent>,
@@ -23,12 +25,14 @@ export class JudgeCommunalProblemsHearingDialogComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private judgeService: JudgeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private datePipe: DatePipe
   ) { 
     this.hearingForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
       name: ["", [Validators.required]],
       lastName: ["", [Validators.required]],
+      date: ["", [Validators.required]],
     });
   }
 
@@ -41,8 +45,9 @@ export class JudgeCommunalProblemsHearingDialogComponent implements OnInit {
   }
 
   public getUserById(): void {
-    this.authService.getUserById(this.userId).subscribe((resp) => {
+    this.authService.getUserById(this.communalProblem.reportedById).subscribe((resp) => {
       this.user = resp;
+      console.log(this.user)
       this.hearingForm = this.formBuilder.group({
         email: [this.user.email, [Validators.required, Validators.email]],
         name: [this.user.firstName, [Validators.required]],
@@ -51,13 +56,27 @@ export class JudgeCommunalProblemsHearingDialogComponent implements OnInit {
     })
   }
 
+  public getChoosenDate(event: any): void {
+    this.date = this.formatDate(event.value);
+  }
+
   public closeDialog(fetch: boolean): void {
     this.dialogRef.close(fetch);
   }
 
+  public formatDate(date: Date): string | null {
+    return this.datePipe.transform(date, 'dd/MM/yyyy');
+  }
+
   public submit(): void {
     this.isLoading = true;
-    this.judgeService.accept(this.communalProblem.id).subscribe({
+    
+    const request = {
+      "email": this.user.email,
+      "date": this.date
+    }
+
+    this.judgeService.accept(this.communalProblem.id, request).subscribe({
       next: (resp) => {
         this.isLoading = false;
         this.dialogRef.close(fetch);
