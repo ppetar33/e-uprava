@@ -7,6 +7,8 @@ import { CommunalPoliceServiceService } from 'src/app/services/communal-police-s
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireStorageReference } from '@angular/fire/compat/storage';
 import { AngularFireUploadTask } from '@angular/fire/compat/storage';
+import { Token } from 'src/app/model/token';
+import jwtDecode from "jwt-decode";
 
 @Component({
   selector: 'app-create-communal-problem',
@@ -17,6 +19,10 @@ export class CreateCommunalProblemComponent implements OnInit {
 
   imageEvent: any;
   communalProblema: CommunalProblem;
+  token: Token | undefined;
+  tokenObj: any;
+  id: string;
+  role: string;
 
   constructor(
     private router: Router,
@@ -25,7 +31,8 @@ export class CreateCommunalProblemComponent implements OnInit {
     private afStorage: AngularFireStorage,
   ) { 
     this.imageEvent = null
-
+    this.id = ""
+    this.role = ""
     this.communalProblema = {
       id: "",
       title: "",
@@ -43,7 +50,23 @@ export class CreateCommunalProblemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.service.isAuthenticated().subscribe(
+			res => {
+				this.token = res.body as Token;
+        console.log(res.body);
+        console.log(this.token)
+        if(this.token.token != "" && res.body != "Not authenticated"){
+          console.log(this.token.token);
+          this.tokenObj = jwtDecode(this.token.token);
+          this.id = this.tokenObj.username
+          this.role = this.tokenObj.role
+          console.log(this.id);
+          console.log("Autorizovan");
+        } else {
+          console.log("Nije Autorizovan");
+        }
+			}
+		);
   }
 
   formData = {
@@ -59,6 +82,9 @@ export class CreateCommunalProblemComponent implements OnInit {
     console.log('Form submitted:', this.formData);
     console.log('Form submitted:', this.communalProblema);
     // this.router.navigate(['create-communal-problem']);
+    if (this.role == "policeman"){
+        this.communalProblema.policemanId = this.id
+    }
     this.service.createNew(this.communalProblema).subscribe(res => {
       console.log("Succesfull save")
       this.router.navigate(['home']);
