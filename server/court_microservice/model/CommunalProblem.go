@@ -7,7 +7,7 @@ type CommunalProblem struct {
 	Address      string `json:"address" bson:"address"`
 	ImageUrl     string `json:"imageUrl" bson:"imageUrl"`
 	ReportedById string `json:"reportedById" bson:"reportedById"`
-	ReportId     string `json:"reportId" bson:"reportId"`
+	ReportId     string `json:"report" bson:"report"`
 	PolicemanId  string `json:"policemanId" bson:"policemanId"`
 	JudgeId      string `json:"judgeId" bson:"judgeId"`
 	Anonymous    bool   `json:"anonymous" bson:"anonymous"`

@@ -224,7 +224,27 @@ func (r Repository) GetCommunalProblemsByCitizen(policemanId string) ([]model.Co
 
 	defer cancel()
 
-	filter := bson.D{{"policemanId", policemanId}}
+	filter := bson.D{{"reportedById", policemanId}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var communalProblems []model.CommunalProblem
+	if err = cursor.All(ctx, &communalProblems); err != nil {
+		fmt.Println(err)
+	}
+	return communalProblems, nil
+}
+
+func (r Repository) GetCommunalProblemsById(id string) ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"id", id}}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {

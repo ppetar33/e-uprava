@@ -34,7 +34,7 @@ export class CreateCommunalProblemComponent implements OnInit {
       address: "",
       reportedById: "",
       policemanId: "",
-      reportId: "",
+      report: "",
       judgeId: "",
       anonymus: false,
       municipality: "",

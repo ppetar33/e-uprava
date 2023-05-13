@@ -1,0 +1,26 @@
+<div class="card test" (click)="onCardClicked($event)">
+    <div class="card-header">
+      <div id="container">        
+        <section class="title-section">
+          {{problem.title}}
+        </section>
+    
+        <section class="date-section">
+          {{problem.date}}
+        </section>
+      </div>
+    </div> 
+
+
+
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>{{problem.description}}</p>
+        <div>
+          <img src="{{problem.imageUrl}}">
+        </div>
+        <p style="margin-top: 10px; font-size: medium;">Municipality: {{problem.municipality}}</p>
+        <footer class="blockquote-footer" *ngIf="problem.anonymus == false">{{problem.reportedById}}</footer>
+      </blockquote>
+    </div>
+  </div>
