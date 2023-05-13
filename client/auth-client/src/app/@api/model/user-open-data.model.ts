@@ -8,4 +8,6 @@ export interface UserOpenData {
     role: string;
     phoneNumber: string;
     address: string;
+    court: string;
+    username: string
   }

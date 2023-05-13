@@ -43,8 +43,8 @@ export class StaffComponent implements OnInit {
     this.getAllJudges();
   }
 
-  exportexcel(): void
-  {
-    this.openDataService.exportToExcel(this.judgesList, 'Judges-list.xlsx');
+  exportexcel(): void {
+    const filteredData = this.judgesList.map(({ password, id, address, jmbg, role, court, username, ...rest }) => rest);
+    this.openDataService.exportToExcel(filteredData, 'Judges-list.xlsx');
   }
 }

@@ -200,6 +200,30 @@ func (h Handler) GetCitizenCommunalProblems(response http.ResponseWriter, reques
 	}
 }
 
+func (h Handler) GetCommunalProblemById(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(request)
+	id, ok := vars["id"]
+	if !ok {
+		json.NewEncoder(response).Encode(`Policeman ID is missing in parameters`)
+		return
+	}
+
+	communalProblems, err := h.Repo.GetCommunalProblemsById(id)
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if communalProblems == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(communalProblems)
+		}
+	}
+}
+
 func (h Handler) AddReport(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
 

@@ -1,0 +1,36 @@
+.test {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 10px;
+}
+
+img {
+    max-width: 300px;
+    height: auto;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+#container{
+    display: flex;
+  }
+  
+  #container section {
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .title-section {
+      font-size: large;
+    width: 80%;
+  }
+  
+  .date-section {
+      font-size: large;
+    width: 20%;
+  }

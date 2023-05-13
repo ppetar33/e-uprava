@@ -236,6 +236,8 @@ func (r Repository) GetListOfMunicipality() ([]string, error) {
 func (r Repository) GetStatisticData() (model.StatisticData, error) {
 	anonymous := 0
 	public := 0
+	solved := 0
+	unsolved := 0
 
 	communalProblems, err := r.GetAllCommunalProblems()
 	if err != nil {
@@ -248,12 +250,19 @@ func (r Repository) GetStatisticData() (model.StatisticData, error) {
 		} else {
 			public += 1
 		}
+		if problem.Solved == true {
+			solved += 1
+		} else {
+			unsolved += 1
+		}
 	}
 
 	statisticData := model.StatisticData{
 		TotalProblems: strconv.Itoa(len(communalProblems)),
 		Anonymous:     strconv.Itoa(anonymous),
 		Public:        strconv.Itoa(public),
+		Solved:        strconv.Itoa(solved),
+		Unsolved:      strconv.Itoa(unsolved),
 	}
 
 	return statisticData, nil
@@ -266,7 +275,27 @@ func (r Repository) GetCommunalProblemsByCitizen(policemanId string) ([]model.Co
 
 	defer cancel()
 
-	filter := bson.D{{"policemanId", policemanId}}
+	filter := bson.D{{"reportedById", policemanId}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+	var communalProblems []model.CommunalProblem
+	if err = cursor.All(ctx, &communalProblems); err != nil {
+		fmt.Println(err)
+	}
+	return communalProblems, nil
+}
+
+func (r Repository) GetCommunalProblemsById(id string) ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"id", id}}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {

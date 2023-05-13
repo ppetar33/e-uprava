@@ -81,6 +81,26 @@ func GetUserById(response http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func GetUserByJmbg(response http.ResponseWriter, r *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+	id, ok := vars["jmbg"]
+	if !ok {
+		json.NewEncoder(response).Encode(`ID is missing in parameters`)
+		return
+	}
+
+	user := server.GetUserByJmbg(id)
+
+	if user == (model.Auth{}) {
+		json.NewEncoder(response).Encode(`Doesn't exist user with this id`)
+		return
+	} else {
+		json.NewEncoder(response).Encode(user)
+	}
+}
+
 func GetUsers(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
 

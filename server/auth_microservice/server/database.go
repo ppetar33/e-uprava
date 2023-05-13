@@ -153,6 +153,21 @@ func GetUserById(id string) model.Auth {
 	return user
 }
 
+func GetUserByJmbg(id string) model.Auth {
+	collection := client.Database("AUTH").Collection("user")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	var user model.Auth
+	err := collection.FindOne(ctx, bson.D{{"jmbg", id}}).Decode(&user)
+	if err != nil {
+		fmt.Println("Doesn't exist user with this jmbg")
+	}
+	return user
+}
+
 func GetAllUsers() ([]model.Auth, error) {
 	collection := client.Database("AUTH").Collection("user")
 

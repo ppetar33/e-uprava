@@ -19,5 +19,4 @@ export class UserService {
   getJudgesByMunicipality(municipality: string):Observable<UserOpenData[]>{
     return this.http.get<UserOpenData[]>(this.path + `/get-judges/${municipality}`);
   }
-
 }

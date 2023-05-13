@@ -29,4 +29,12 @@ export class CommunalProblemService {
     return this.http.get<CommunalStatisticData>(this.path + `/get-statistic-data`);
   }
 
+  getSolvedCommunalProblems():Observable<CommunalProblem[]>{
+    return this.http.get<CommunalProblem[]>(this.path + `/get-solved-communal-problems`);
+  }
+
+  getUnsolvedCommunalProblems():Observable<CommunalProblem[]>{
+    return this.http.get<CommunalProblem[]>(this.path + `/get-un-solved-communal-problems`);
+  }
+
 }
