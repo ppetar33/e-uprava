@@ -23,6 +23,8 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthModule } from '@auth0/auth0-angular';
 import { JudgeCommunalProblemsDetailsComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems-details/judge-communal-problems-details.component';
 import { JudgeCommunalProblemsHearingDialogComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems-hearing-dialog/judge-communal-problems-hearing-dialog.component';
+import { JudgeCommunalProblemsDeclineComponent } from './@pages/judge/judge-communal-problems/judge-communal-problems-decline/judge-communal-problems-decline.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { JudgeCommunalProblemsHearingDialogComponent } from './@pages/judge/judg
     ToastBarComponent,
     JudgeCommunalProblemsComponent,
     JudgeCommunalProblemsDetailsComponent,
-    JudgeCommunalProblemsHearingDialogComponent
+    JudgeCommunalProblemsHearingDialogComponent,
+    JudgeCommunalProblemsDeclineComponent,
   ],
   imports: [ 
     BrowserModule,
@@ -57,6 +60,7 @@ import { JudgeCommunalProblemsHearingDialogComponent } from './@pages/judge/judg
     }),
   ],
   providers: [
+    DatePipe,
     {
       provide: JWT_OPTIONS,
       useValue: JWT_OPTIONS,

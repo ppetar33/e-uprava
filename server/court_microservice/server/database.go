@@ -125,7 +125,7 @@ func GetCommunalProblemsByJudge(judgeId string) ([]model.CommunalProblem, error)
 	return communalProblems, nil
 }
 
-func AcceptCommunalProblem(id string) error {
+func AcceptCommunalProblem(id string, dateHearing string) error {
 	collection := client.Database("COURT").Collection("communalProblems")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -137,6 +137,8 @@ func AcceptCommunalProblem(id string) error {
 		bson.M{"id": id},
 		bson.D{
 			{"$set", bson.D{{"accepted", true}}},
+			{"$set", bson.D{{"hearing", true}}},
+			{"$set", bson.D{{"dateHearing", dateHearing}}},
 		},
 	)
 	if err != nil {
@@ -145,7 +147,27 @@ func AcceptCommunalProblem(id string) error {
 	return nil
 }
 
-func DeclineCommunalProblem(id string) error {
+func SolveCommunalProblem(id string) error {
+	collection := client.Database("COURT").Collection("communalProblems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	_, err := collection.UpdateOne(
+		ctx,
+		bson.M{"id": id},
+		bson.D{
+			{"$set", bson.D{{"solved", true}}},
+		},
+	)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nil
+}
+
+func DeclineCommunalProblem(id string, improvement *model.Improvement) error {
 	collection := client.Database("COURT").Collection("communalProblems")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -157,6 +179,7 @@ func DeclineCommunalProblem(id string) error {
 		bson.M{"id": id},
 		bson.D{
 			{"$set", bson.D{{"accepted", false}}},
+			{"$set", bson.D{{"improvement", improvement.Text}}},
 		},
 	)
 	if err != nil {

@@ -15,6 +15,7 @@
                     <p class="problem__no-data-txt">There is no communal problems assign to you at this moment, sit tight.</p>
                 </div>
                 <div class="problem__table-wrapper" *ngIf="!isLoading && this.dataSource.data.toString() !== '[]'">
+                    <h3 class="problem__heading">Communal problems assigned to you by our system. It is your responsibility to either accept and contact the user for further discussion or reject the selected communal problem, providing a reason for returning it for further review.</h3>
                     <div class="problem__table">
                         <div class="problem__actions">
                           <div class="problem__search">
@@ -55,9 +56,9 @@
                     </div>
                 </div>
             </div>
-            <div class="problem__footer">
-                <app-footer></app-footer>
-            </div>
+        </div>
+        <div class="problem__footer">
+          <app-footer></app-footer>
         </div>
     </div>
     <app-toast-bar [message]="errorMessage" [status]="'failure'" [duration]="2" *ngIf="errorMessage"></app-toast-bar>
