@@ -65,6 +65,23 @@ func (h Handler) GetAllCommunalProblems(response http.ResponseWriter, request *h
 	}
 }
 
+func (h Handler) GetResolvedCommunalProblems(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	communalProblems, err := h.Repo.GetResolvedCommunalProblems()
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	} else {
+		if communalProblems == nil {
+			json.NewEncoder(response).Encode(`[]`)
+		} else {
+			json.NewEncoder(response).Encode(communalProblems)
+		}
+	}
+}
+
 func (h Handler) GetListOfMunicipality(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
 
@@ -185,4 +202,22 @@ func (h Handler) AddReport(response http.ResponseWriter, request *http.Request) 
 	}
 
 	json.NewEncoder(response).Encode(`Successfully added report!`)
+}
+
+func (h Handler) DeleteCommunalProblemById(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(request)
+	id, ok := vars["id"]
+	if !ok {
+		json.NewEncoder(response).Encode(`Policeman ID is missing in parameters`)
+		return
+	}
+
+	err := h.Repo.DeleteCommunalProblemById(id)
+
+	if err != nil {
+		json.NewEncoder(response).Encode(err)
+		return
+	}
 }

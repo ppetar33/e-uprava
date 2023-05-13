@@ -152,6 +152,27 @@ func (r Repository) GetCommunalProblemByMunicipality(municipality string) ([]mod
 	return problems, nil
 }
 
+func (r Repository) GetResolvedCommunalProblems() ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"accepted", "true"}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+
+	var problems []model.CommunalProblem
+	if err = cursor.All(ctx, &problems); err != nil {
+		log.Fatal(err)
+	}
+
+	return problems, nil
+}
+
 func (r Repository) GetCommunalProblemsByPoliceman(policemanId string) ([]model.CommunalProblem, error) {
 	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
 
@@ -281,4 +302,22 @@ func (r Repository) CheckToken(ctx context.Context) (string, error) {
 
 	var foundedToken = tokens[0].Token
 	return foundedToken, nil
+}
+
+func (r Repository) DeleteCommunalProblemById(id string) error {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"id", id}}
+
+	_, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		return err
+		log.Fatal(err)
+	}
+
+	return nil
 }
