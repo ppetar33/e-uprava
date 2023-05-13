@@ -1,11 +1,86 @@
 <div class="home">
     <div class="home__wrapper">
-        <div class="home__container">
+        <div class="home__container container">
             <div class="home__header">
                 <app-header></app-header>
             </div>
             <div class="home__content">
+                <div class="spinner-wrapper" *ngIf="isLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>                
+                <div class="home__no-data" *ngIf="!isLoading && this.dataSource.data.toString() === '[]'">
+                    <img class="home__no-data-img" src="../../../../assets/images/no-data.png" alt="">
+                    <p class="home__no-data-txt">There is no communal problems assign to you at this moment, sit tight.</p>
+                </div>
+                <div class="home__table-wrapper" *ngIf="!isLoading && this.dataSource.data.toString() !== '[]'">
+                    <div class="home__table">
+                        <h3 class="home__heading">Below, you can see unresolved communal issues that still need to be addressed. However, it is up to you to solve them, and you can do so by clicking the button located in the "solve" column. By taking this action, the communal problem will be resolved.</h3>
+                        <div class="home__actions">
+                          <div class="home__search">
+                            <mat-form-field appearance="fill">
+                              <mat-label>Search</mat-label>
+                              <input matInput (keyup)="applyFilter($event.target)" placeholder="Search by whatever field you would like">
+                              <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="home__table mat-elevation-z8">
+                          <mat-table [dataSource]="dataSource" matSort id="home-table">
+                            <ng-container matColumnDef="title">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> TITLE </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="description">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> DESCRIPTION </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="address">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> ADDRESS </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> {{row.address}} </mat-cell>
+                            </ng-container>
 
+                            <ng-container matColumnDef="dateHearing">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> DATE HEARING </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.dateHearing}} </mat-cell>
+                              </ng-container>
+
+                            <ng-container matColumnDef="solved">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> SOLVED </mat-header-cell>
+                              <mat-cell *matCellDef="let row"> 
+                                    <ng-container *ngIf="!row.solved">
+                                        <i class="bi bi-x-circle"></i> 
+                                    </ng-container>
+                                    <ng-container *ngIf="row.solved">
+                                        <i class="bi bi-check-square-fill"></i>
+                                    </ng-container>
+                              </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="solve">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> SOLVE </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> 
+                                    <ng-container *ngIf="!row.solved">
+                                        <a matTooltip="Solve this communal problem" (click)="solve(row.id)">
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </a> 
+                                    </ng-container>
+                                    <ng-container *ngIf="row.solved">
+                                        Already solved
+                                    </ng-container>
+                                </mat-cell>
+                              </ng-container>
+                        
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;">
+                            </mat-row>
+                          </mat-table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="home__footer">
                 <app-footer></app-footer>

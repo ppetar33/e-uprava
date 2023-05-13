@@ -18,6 +18,30 @@ func DecodyBodyCommunalProblem(r io.Reader) (*model.CommunalProblem, error) {
 	return &rt, nil
 }
 
+func DecodyBodyImprovement(r io.Reader) (*model.Improvement, error) {
+	dec := json.NewDecoder(r)
+	dec.DisallowUnknownFields()
+
+	var rt model.Improvement
+	if err := dec.Decode(&rt); err != nil {
+		return nil, err
+	}
+
+	return &rt, nil
+}
+
+func DecodyBodyHearing(r io.Reader) (*model.Hearing, error) {
+	dec := json.NewDecoder(r)
+	dec.DisallowUnknownFields()
+
+	var rt model.Hearing
+	if err := dec.Decode(&rt); err != nil {
+		return nil, err
+	}
+
+	return &rt, nil
+}
+
 func DecodyBodyJudge(r io.Reader) (*model.Judge, error) {
 	dec := json.NewDecoder(r)
 	dec.DisallowUnknownFields()

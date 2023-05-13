@@ -14,10 +14,10 @@
                     <mat-card class="mat-card">
                         <mat-card-title class="mat-card__title">{{ communalProblem.title }}</mat-card-title>
                         <p *ngIf="communalProblem.anonymous" class="mat-card__anonymous"><i class="bi bi-person-fill-slash"></i></p>
-                        <div class="mat-card__img-wrapper">
-                            <img class="mat-card__img" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"/>
+                        <div class="mat-card__img-wrapper" *ngIf="communalProblem.imageUrl">
+                            <img class="mat-card__img" mat-card-image src="{{ communalProblem.imageUrl }}"/>
                         </div>
-                        <mat-card-content class="mat-card__content">
+                        <mat-card-content class="mat-card__content" [ngClass]="{'space-top' : !communalProblem.imageUrl}">
                             <p class="mat-card__txt">{{ communalProblem.description }}</p>
                         </mat-card-content>
                         <mat-card-actions class="mat-card__actions" *ngIf="communalProblem.accepted == null">

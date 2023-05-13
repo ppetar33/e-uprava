@@ -43,8 +43,7 @@ export class NavComponent implements OnInit {
   public logout(): void {
     this.authService.logoutAuth().subscribe((resp) => {
       localStorage.clear();
-      window.location.reload();
-      this.router.navigate(['']);
+      window.location.href = "http://localhost:4200/home"
     });
   }
 }

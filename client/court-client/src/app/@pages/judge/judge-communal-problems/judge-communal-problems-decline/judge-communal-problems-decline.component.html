@@ -1,0 +1,30 @@
+<ng-container>
+    <div class="decline__wrapper" [ngClass]="{ 'disabled' : isLoading }">
+        <div class="decline">
+            <div class="decline__header-wrapper">
+                <h1 class="decline__title" mat-dialog-title>Decline Communal Problem</h1>
+                <i class="bi bi-x" (click)="closeDialog(false)"></i>
+            </div>
+            <div class="decline__body-wrapper" mat-dialog-content>
+                <div class="decline__body">
+                    <form class="decline__form-wrapper" [formGroup]="declineForm">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Improvement</mat-label>
+                            <input required class="decline__input" type="email" matInput formControlName="text">
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="decline__btn-wrapper">
+            <button class="decline__btn-close" mat-button type="button" (click)="closeDialog(false)">Close</button>
+            <button class="decline__btn-create" [disabled]="!this.declineForm.valid" mat-button type="button" (click)="submit()">Accept</button>
+        </div>
+    </div>
+    <div class="spinner-wrapper" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <app-toast-bar [message]="errorMessage" [status]="'failure'" [duration]="1" *ngIf="errorMessage"></app-toast-bar>
+</ng-container>

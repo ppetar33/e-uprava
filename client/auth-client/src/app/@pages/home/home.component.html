@@ -17,9 +17,24 @@
                     <section class="dataSection">
                         <h1>Privatnih: {{statisticData.anonymous}}</h1>
                     </section>
+                    <section class="dataSection">
+                        <h1>Resenih </h1>
+                    </section>
+                    <section class="dataSection">
+                        <h1>Neresenih </h1>
+                    </section>
                 </div>
 
-                <div id="container">        
+                <div style="background-color: white;">
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item">
+                          <button class="buttonExport">All problems</button>  
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="container">    
+                    
                     <section class="communal-problem-section">
                         <div *ngFor="let problem of listCommunalProblems" >
                             <app-communal-problem-card [problem]="problem"></app-communal-problem-card>

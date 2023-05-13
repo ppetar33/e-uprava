@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/@api/services/auth.service';
 import { JudgeService } from 'src/app/@api/services/judge.service';
 import { TokenService } from 'src/app/@api/services/token.service';
 import { JudgeCommunalProblemsHearingDialogComponent } from '../judge-communal-problems-hearing-dialog/judge-communal-problems-hearing-dialog.component';
+import { JudgeCommunalProblemsDeclineComponent } from '../judge-communal-problems-decline/judge-communal-problems-decline.component';
 
 @Component({
   selector: 'app-judge-communal-problems-details',
@@ -56,17 +57,18 @@ export class JudgeCommunalProblemsDetailsComponent implements OnInit {
   }
 
   public decline(): void {
-    this.isLoading = true;
-    this.judgeService.decline(this.id).subscribe({
-      next: (resp) => {
-        this.isLoading = false;
+    const dialogRef = new MatDialogConfig();
+    dialogRef.disableClose = true;
+    dialogRef.autoFocus = false;
+    dialogRef.data = {
+      userId: this.communalProblem.reportedById,
+      communalProblem: this.communalProblem
+    }
+    this.dialog.open(JudgeCommunalProblemsDeclineComponent, dialogRef).afterClosed().subscribe((data) => {
+      if(data) {
+        this.isLoading = true;
         this.getCommunalProblem();
-      },
-      error: () => {
-        this.errorMessage = 'Error declining communal problem.';
-        this.isLoading = false;
       }
     });
-    this.errorMessage = '';
   }
 }
