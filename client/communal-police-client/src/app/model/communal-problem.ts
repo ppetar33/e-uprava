@@ -6,7 +6,7 @@ export interface CommunalProblem {
     address: string;
     reportedById: string;
     policemanId: string;
-    reportId: string;
+    report: string;
     judgeId: string;
     anonymus: boolean;
     municipality: string

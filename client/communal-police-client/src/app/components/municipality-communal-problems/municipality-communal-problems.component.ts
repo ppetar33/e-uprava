@@ -5,15 +5,16 @@ import { CommunalProblem } from 'src/app/model/communal-problem';
 import { CommunalProblemCardComponent } from '../communal-problem-card/communal-problem-card.component';
 import { Token } from 'src/app/model/token';
 import jwtDecode from "jwt-decode";
-
+import { User } from 'src/app/model/user';
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-municipality-communal-problems',
+  templateUrl: './municipality-communal-problems.component.html',
+  styleUrls: ['./municipality-communal-problems.component.css']
 })
-export class HomeComponent implements OnInit {
+export class MunicipalityCommunalProblemsComponent implements OnInit {
 
   communalProblems: CommunalProblem[];
+  user: User | undefined;
   token: Token | undefined;
   tokenObj: any;
   id: string;
@@ -21,55 +22,42 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private communalPoliceService : CommunalPoliceServiceService,
-  ) { 
+    ) {
     this.communalProblems = []
     this.id = "";
-
-  }
+   }
 
   ngOnInit(): void {
-    console.log("Home ekran");
     this.communalPoliceService.isAuthenticated().subscribe(
 			res => {
 				this.token = res.body as Token;
         console.log(res.body);
         console.log(this.token)
-
         if(this.token.token != "" && res.body != "Not authenticated"){
           console.log(this.token.token);
           this.tokenObj = jwtDecode(this.token.token);
           this.id = this.tokenObj.username
           console.log(this.id);
-          this.getAllCommunalProblemsByCitizen(this.id);
+          this.getUserByJMBG(this.id);
           console.log("Autorizovan");
         } else {
           console.log("Nije Autorizovan");
         }
 			}
 		);
-
   }
 
-  createCommunalProblem(event: any) {
-    this.router.navigate(['create-communal-problem']);
-  }
-
-  // getAllCommunalProblems(){
-  //   this.communalPoliceService.getAll().subscribe(
-	// 		res => {
-	// 			this.communalProblems = res.body as CommunalProblem[];
-  //       console.log(res.body);
-	// 		}
-	// 	);
-  // }
-
-  getAllCommunalProblemsByCitizen(id: string){
-    this.communalPoliceService.getByCitizen(id).subscribe(
+  getUserByJMBG(jmbg: string){
+    this.communalPoliceService.getUserByJMBG(jmbg).subscribe(
 			res => {
-				this.communalProblems = res.body as CommunalProblem[];
+				this.user = res.body as User;
         console.log(res.body);
+        if (this.user.municipality != ""){
+          this.communalPoliceService.getByMunicipality(this.user.municipality).subscribe( resProblems => {
+            this.communalProblems = resProblems.body as CommunalProblem[];
+          })
+        }
 			}
 		);
   }
-
 }

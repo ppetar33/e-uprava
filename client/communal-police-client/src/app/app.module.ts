@@ -11,6 +11,10 @@ import { environment } from '../environments/environment';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CommunalProblemCardComponent } from './components/communal-problem-card/communal-problem-card.component';
+import { PolicemanCommunalProblemsComponent } from './components/policeman-communal-problems/policeman-communal-problems.component';
+import { MunicipalityCommunalProblemsComponent } from './components/municipality-communal-problems/municipality-communal-problems.component';
+import { CommunalProblemmDetailsComponent } from './components/communal-problemm-details/communal-problemm-details.component';
 
 
 @NgModule({
@@ -18,7 +22,11 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     HomeComponent,
     CreateCommunalProblemComponent,
-    NavbarComponent
+    NavbarComponent,
+    CommunalProblemCardComponent,
+    PolicemanCommunalProblemsComponent,
+    MunicipalityCommunalProblemsComponent,
+    CommunalProblemmDetailsComponent
   ],
   imports: [
     BrowserModule,

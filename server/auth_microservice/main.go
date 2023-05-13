@@ -36,6 +36,7 @@ func main() {
 	router.HandleFunc("/api/auth/logout", Logout).Methods("POST")
 	router.HandleFunc("/api/auth/authenticated", Authenticated).Methods("GET")
 	router.HandleFunc("/api/auth/user/{id}", GetUserById).Methods("GET")
+	router.HandleFunc("/api/auth/user-jmbg/{jmbg}", GetUserByJmbg).Methods("GET")
 	router.HandleFunc("/api/auth/users", GetUsers).Methods("GET")
 	router.HandleFunc("/api/auth/judges", GetAllJudges).Methods("GET")
 
