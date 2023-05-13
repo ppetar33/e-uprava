@@ -5,12 +5,11 @@
                 <app-header></app-header>
             </div>
             <div class="home__content">
-                <ul class="nav justify-content-center">
-                    <li class="nav-item">
-                      <button (click)="exportexcel()" class="buttonExport">Export Judges to Excel</button>    
-                    </li>
-                </ul>
-
+                <div id="container">
+                    <section class="buttonSection">
+                        <button type="button" class="btn btn-success" (click)="exportexcel()">Export data to excel</button>
+                    </section> 
+                </div>
                   <div id="container">    
                     <section class="staff-section">
                         <div>

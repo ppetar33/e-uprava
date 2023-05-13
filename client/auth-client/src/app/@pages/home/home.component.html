@@ -9,17 +9,39 @@
 
                 <div id="container">
                     <section class="dataSection">
-                        <h1>Ukupno prijava: {{statisticData.totalProblems}}</h1>
+                        <h1>Total problems: {{statisticData.totalProblems}}</h1>
                     </section>
                     <section class="dataSection">
-                        <h1>Javnih: {{statisticData.public}}</h1>
+                        <h1>Public: {{statisticData.public}}</h1>
                     </section>
                     <section class="dataSection">
-                        <h1>Privatnih: {{statisticData.anonymous}}</h1>
+                        <h1>Anonymous: {{statisticData.anonymous}}</h1>
+                    </section>
+                    <section class="dataSection">
+                        <h1>Solved: {{statisticData.solved}}</h1>
+                    </section>
+                    <section class="dataSection">
+                        <h1>Unsolved: {{statisticData.unsolved}}</h1>
                     </section>
                 </div>
 
-                <div id="container">        
+                <div id="container">
+                    <section class="buttonSection">
+                        <button type="button" class="btn btn-primary" (click)="clickAllProblems()">All problems</button>
+                    </section> 
+                    <section class="buttonSection">
+                        <button type="button" class="btn btn-primary" (click)="clickSolved()">Solved problems</button>
+                    </section> 
+                    <section class="buttonSection">
+                        <button type="button" class="btn btn-primary" (click)="clickUnsolved()">Unsolved problems</button>
+                    </section> 
+                    <section class="buttonSection">
+                        <button type="button" class="btn btn-success" (click)="clickExportExcel()">Export data to excel</button>
+                    </section> 
+                </div>
+
+                <div id="container">    
+                    
                     <section class="communal-problem-section">
                         <div *ngFor="let problem of listCommunalProblems" >
                             <app-communal-problem-card [problem]="problem"></app-communal-problem-card>
