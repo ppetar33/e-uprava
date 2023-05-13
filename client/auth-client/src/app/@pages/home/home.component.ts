@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommunalProblem } from 'src/app/@api/model/communal-problem.model';
 import { CommunalStatisticData } from 'src/app/@api/model/communal-statistic-data.model';
 import { CommunalProblemService } from 'src/app/@api/services/communal-problem.service';
+import { OpenDataService } from 'src/app/@api/services/open-data.service';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +16,12 @@ export class HomeComponent implements OnInit {
   statisticData: CommunalStatisticData = {
     totalProblems: '',
     anonymous: '',
-    public: ''
+    public: '',
+    solved: '',
+    unsolved: ''
   }
 
-  constructor(private communalProblemService : CommunalProblemService) { }
+  constructor(private communalProblemService: CommunalProblemService, private openDataService: OpenDataService) { }
 
   ngOnInit(): void {
     this.getAllMunicipality();
@@ -28,7 +31,6 @@ export class HomeComponent implements OnInit {
 
   private getAllCommunalProblems(): void {
     this.communalProblemService.getAll().subscribe(res => {
-      console.log(res)
       this.listCommunalProblems = res;
     })
   }
@@ -51,7 +53,29 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  clickAllMunicipality():void{
+  clickAllMunicipality():void {
     this.getAllCommunalProblems();
   }
+
+  clickAllProblems():void {
+    this.getAllCommunalProblems();
+  }
+  
+  clickSolved():void {
+    this.communalProblemService.getSolvedCommunalProblems().subscribe(res => {
+      this.listCommunalProblems = res;
+    })
+  }
+
+  clickUnsolved():void {
+    this.communalProblemService.getUnsolvedCommunalProblems().subscribe(res => {
+      this.listCommunalProblems = res;
+    })
+  }
+
+  clickExportExcel(): void {
+    const filteredData = this.listCommunalProblems.map(({ id, imageUrl, reportedById, report, policemanId, judgeId, anonymous, accepted, sent, solved, improvement,...rest }) => rest);
+    this.openDataService.exportToExcel(filteredData, 'Communal-problems.xlsx');
+  }
+
 }

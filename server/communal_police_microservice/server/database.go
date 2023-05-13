@@ -152,6 +152,48 @@ func (r Repository) GetCommunalProblemByMunicipality(municipality string) ([]mod
 	return problems, nil
 }
 
+func (r Repository) GetSolvedCommunalProblems() ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"solved", true}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+
+	var problems []model.CommunalProblem
+	if err = cursor.All(ctx, &problems); err != nil {
+		log.Fatal(err)
+	}
+
+	return problems, nil
+}
+
+func (r Repository) GetUnSolvedCommunalProblems() ([]model.CommunalProblem, error) {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"solved", false}}
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		panic(err)
+	}
+
+	var problems []model.CommunalProblem
+	if err = cursor.All(ctx, &problems); err != nil {
+		log.Fatal(err)
+	}
+
+	return problems, nil
+}
+
 func (r Repository) GetCommunalProblemsByPoliceman(policemanId string) ([]model.CommunalProblem, error) {
 	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
 
@@ -194,6 +236,8 @@ func (r Repository) GetListOfMunicipality() ([]string, error) {
 func (r Repository) GetStatisticData() (model.StatisticData, error) {
 	anonymous := 0
 	public := 0
+	solved := 0
+	unsolved := 0
 
 	communalProblems, err := r.GetAllCommunalProblems()
 	if err != nil {
@@ -206,12 +250,19 @@ func (r Repository) GetStatisticData() (model.StatisticData, error) {
 		} else {
 			public += 1
 		}
+		if problem.Solved == true {
+			solved += 1
+		} else {
+			unsolved += 1
+		}
 	}
 
 	statisticData := model.StatisticData{
 		TotalProblems: strconv.Itoa(len(communalProblems)),
 		Anonymous:     strconv.Itoa(anonymous),
 		Public:        strconv.Itoa(public),
+		Solved:        strconv.Itoa(solved),
+		Unsolved:      strconv.Itoa(unsolved),
 	}
 
 	return statisticData, nil
@@ -442,4 +493,22 @@ func (r Repository) CheckToken(ctx context.Context) (string, error) {
 
 	var foundedToken = tokens[0].Token
 	return foundedToken, nil
+}
+
+func (r Repository) DeleteCommunalProblemById(id string) error {
+	collection := client.Database("COMMUNAL_POLICE").Collection("communal_problems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	filter := bson.D{{"id", id}}
+
+	_, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		return err
+		log.Fatal(err)
+	}
+
+	return nil
 }

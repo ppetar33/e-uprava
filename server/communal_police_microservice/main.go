@@ -36,6 +36,8 @@ func main() {
 	router.HandleFunc("/api/communal-police/test", CommunalPoliceTest).Methods("GET")
 	router.HandleFunc("/api/communal-police/create-communal-problem", handler.CreateCommunalProblem).Methods("POST")
 	router.HandleFunc("/api/communal-police/get-communal-problems", handler.GetAllCommunalProblems).Methods("GET")
+	router.HandleFunc("/api/communal-police/get-solved-communal-problems", handler.GetSolvedCommunalProblems).Methods("GET")
+	router.HandleFunc("/api/communal-police/get-un-solved-communal-problems", handler.GetUnSolvedCommunalProblems).Methods("GET")
 	router.HandleFunc("/api/communal-police/get-communal-problem/{id}", handler.GetCommunalProblemById).Methods("GET")
 
 	router.HandleFunc("/api/communal-police/get-municipality", handler.GetListOfMunicipality).Methods("GET")
@@ -49,6 +51,8 @@ func main() {
 	router.HandleFunc("/api/communal-police/add-report", handler.AddReport).Methods("PUT")
 	router.HandleFunc("/api/communal-police/assign-problem", handler.AssignProblem).Methods("PUT")
 	router.HandleFunc("/api/communal-police/solve", handler.SolveCommunalProblem).Methods("PUT")
+
+	router.HandleFunc("/api/communal-police/delete/{id}", handler.DeleteCommunalProblemById).Methods("DELETE")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
