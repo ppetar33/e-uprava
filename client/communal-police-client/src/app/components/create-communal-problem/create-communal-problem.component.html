@@ -47,16 +47,22 @@
 		}
 	</style>
 </head>
-<body>
+<body style="margin-top: 60px;">
 	<form>
 		<label for="field1">Communal problem title:</label>
-		<input type="text" name="title" id="title" [(ngModel)]="communalProblema.title">
+		<input type="text" name="title" id="title" [(ngModel)]="communalProblema.title" #titleNgModel="ngModel" required>
+		<small *ngIf="titleNgModel.touched && titleNgModel.errors?.['required']" class="text-danger">
+			Title is required</small>
 		
 		<label for="field2">Communal problem description:</label>
-		<input type="text" name="desription" id="desription" [(ngModel)]="communalProblema.description">
-		
+		<input type="text" name="desription" id="desription" [(ngModel)]="communalProblema.description"  #descNgModel="ngModel" required>
+		<small *ngIf="descNgModel.touched && descNgModel.errors?.['required']" class="text-danger">
+			Description is required</small>
+
 		<label for="field3">Communal problem address:</label>
-		<input type="text" name="address" id="address" [(ngModel)]="communalProblema.address">
+		<input type="text" name="address" id="address" [(ngModel)]="communalProblema.address" #addressNgModel="ngModel" required>
+		<small *ngIf="addressNgModel.touched && addressNgModel.errors?.['required']" class="text-danger">
+			Address is required</small>
 
         <div style="text-align: center;">
             <div style="margin-left:100px;">
@@ -71,7 +77,7 @@
 		<select name="municipality" id="municipality" [(ngModel)]="communalProblema.municipality">
 			<option value="">-- Municipality --</option>
 			<option value="Beograd">Beograd</option>
-			<option value="Novi Sad">Novi Sad</option>
+			<option value="Novi_Sad">Novi Sad</option>
 			<option value="Niš">Niš</option>
 		</select>
 		

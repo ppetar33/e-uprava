@@ -54,7 +54,15 @@ export class MunicipalityCommunalProblemsComponent implements OnInit {
         console.log(res.body);
         if (this.user.municipality != ""){
           this.communalPoliceService.getByMunicipality(this.user.municipality).subscribe( resProblems => {
-            this.communalProblems = resProblems.body as CommunalProblem[];
+            // this.communalProblems = resProblems.body as CommunalProblem[];
+            let list = resProblems.body as CommunalProblem[];
+            let tempList: CommunalProblem[] = []
+            list.forEach( item => {
+              if (!item.sent && item.policemanId == ""){
+                tempList.push(item)
+              }
+            });
+            this.communalProblems = tempList
           })
         }
 			}

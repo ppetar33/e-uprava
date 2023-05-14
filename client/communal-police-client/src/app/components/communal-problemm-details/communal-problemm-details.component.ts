@@ -19,6 +19,7 @@ export class CommunalProblemmDetailsComponent implements OnInit {
   token: Token | undefined;
   tokenObj: any;
   userId: string;
+  role: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +28,7 @@ export class CommunalProblemmDetailsComponent implements OnInit {
   ) { 
     this.id = ""
     this.userId = ""
+    this.role = ""
     this.loaded = false
     this.problems = []
   }
@@ -55,6 +57,7 @@ export class CommunalProblemmDetailsComponent implements OnInit {
           console.log(this.token.token);
           this.tokenObj = jwtDecode(this.token.token);
           this.userId = this.tokenObj.username
+          this.role = this.tokenObj.role
           console.log(this.userId);
           console.log("Autorizovan");
         } else {
@@ -77,12 +80,15 @@ export class CommunalProblemmDetailsComponent implements OnInit {
   sendToCourt(event: Event){
     console.log(this.loaded);
     this.communalPoliceService.sendToCOurt(this.problems[0]).subscribe(res => {
-      console.log("Succesfull save")
-      this.router.navigate(['home']);
+      console.log("Succesfull send to court")
+      this.communalPoliceService.sendToCourtCommunalPolice(this.problems[0]).subscribe(res => {
+        this.router.navigate(['home']);
+      });
     },
       err => {
         console.log("Error")
       })
+
   }
 
   accept(event: Event){

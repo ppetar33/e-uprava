@@ -23,6 +23,7 @@ export class CreateCommunalProblemComponent implements OnInit {
   tokenObj: any;
   id: string;
   role: string;
+  now = new Date();
 
   constructor(
     private router: Router,
@@ -45,7 +46,9 @@ export class CreateCommunalProblemComponent implements OnInit {
       judgeId: "",
       anonymus: false,
       municipality: "",
-      date: ""
+      date: "",
+      sent: false,
+      solved: false
     }
   }
 
@@ -85,6 +88,13 @@ export class CreateCommunalProblemComponent implements OnInit {
     if (this.role == "policeman"){
         this.communalProblema.policemanId = this.id
     }
+    console.log(this.now.toUTCString()); // 👉️ Fri, 20 Jan 2023 12:01:41 GMT
+    this.communalProblema.date = this.now.toUTCString()
+
+    if (this.communalProblema.anonymus){
+      this.communalProblema.reportedById = ""
+    }
+
     this.service.createNew(this.communalProblema).subscribe(res => {
       console.log("Succesfull save")
       this.router.navigate(['home']);

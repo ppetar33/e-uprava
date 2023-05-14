@@ -1,3 +1,7 @@
-top {
-    margin-top: 150px;
-}
+:host {
+    display: block;
+  }
+  
+router-outlet {
+    margin-top: 160px; /* Change this to the height of your app-navbar */
+  }

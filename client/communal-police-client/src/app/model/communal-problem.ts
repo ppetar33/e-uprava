@@ -11,4 +11,6 @@ export interface CommunalProblem {
     anonymus: boolean;
     municipality: string
     date: string;
+    sent: boolean;
+    solved: boolean;
 }
