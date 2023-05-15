@@ -173,6 +173,28 @@ export class CommunalPoliceServiceService {
 		{ headers: this.headers, responseType: 'json' });
 	}
 
+	sendToCourtCommunalPolice(communalProblem: CommunalProblem): Observable<any> {
+		let url = "http://localhost:8000/api/communal-police/sent-to-court"
+
+		return this.http.put(url,
+			{
+				id: communalProblem.id,
+				title: communalProblem.title,
+				description: communalProblem.description,
+				address: communalProblem.address,
+				imageUrl: communalProblem.imageUrl,
+        		policemanId: communalProblem.policemanId,
+        		anonymous: communalProblem.anonymus,
+        		date: communalProblem.date,
+        		municipality: communalProblem.municipality,
+        		judgeId: communalProblem.judgeId,
+        		report: communalProblem.report,
+				reportedById: communalProblem.reportedById,
+				accepted: false
+			},
+		{ headers: this.headers, responseType: 'json' });
+	}
+
 	isAuthenticated(): Observable<any> {
 		let url = "http://localhost:8000/api/auth/authenticated"
 		let queryParams = {};

@@ -23,4 +23,9 @@
         <footer class="blockquote-footer" *ngIf="problem.anonymus == false">{{problem.reportedById}}</footer>
       </blockquote>
     </div>
+
+    <div class="card-footer d-flex justify-content">
+      <p style="margin-top: 10px; font-size: medium; color: green;" *ngIf="problem.solved">Problem solved</p>
+      <p style="margin-top: 10px; font-size: medium; color: red;" *ngIf="!problem.solved">Problem is not solved</p>
+    </div>
   </div>

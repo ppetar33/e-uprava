@@ -1,5 +1,7 @@
-<ng-container *ngIf="communalProblems.toString() !== '[]'">
+<div style="margin-top: 90px;">
+    <ng-container *ngIf="communalProblems.toString() !== '[]'" >
     <div *ngFor="let problem of communalProblems" >
         <app-communal-problem-card [problem]="problem"></app-communal-problem-card>
     </div>
-</ng-container>
+    </ng-container>
+</div>

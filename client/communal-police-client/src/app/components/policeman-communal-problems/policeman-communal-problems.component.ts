@@ -49,9 +49,17 @@ export class PolicemanCommunalProblemsComponent implements OnInit {
 
   getAllCommunalProblemsByPoliceman(id: string){
     this.communalPoliceService.getByPoliceman(id).subscribe(
-			res => {
-				this.communalProblems = res.body as CommunalProblem[];
-        console.log(res.body);
+			resProblems => {
+        let list = resProblems.body as CommunalProblem[];
+            let tempList: CommunalProblem[] = []
+            list.forEach( item => {
+              if (!item.sent){
+                tempList.push(item)
+              }
+            });
+            this.communalProblems = tempList
+				// this.communalProblems = res.body as CommunalProblem[];
+        console.log(resProblems.body);
 			}
 		);
   }

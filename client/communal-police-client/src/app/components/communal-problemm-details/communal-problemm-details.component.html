@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <div class="card">
+    <div class="card" style="margin-top: 90px; margin-bottom: 90px;">
       <div class="card-header">
         Communal Problem Details
       </div>
@@ -35,7 +35,9 @@
 
         <div class="form-group">
             <label>Report:</label>
-            <textarea class="form-control" rows="5" [(ngModel)]="problems[0].report"></textarea>
+            <textarea class="form-control" rows="5" [(ngModel)]="problems[0].report" #reportNgModel="ngModel" required></textarea>
+            <small *ngIf="reportNgModel.touched && reportNgModel.errors?.['required']" class="text-danger">
+              Address is required</small>
           </div>
         <div class="form-group">
           <label>Judge ID:</label>
@@ -54,10 +56,10 @@
           <p class="form-control-static">{{ problems[0].date }}</p>
         </div>
       </div>
-      <div class="card-footer d-flex justify-content-between">
-        <button type="button" class="btn btn-primary mr-2" (click)="accept($event)">Accept</button>
+      <div class="card-footer d-flex justify-content-between" *ngIf="role == 'policeman'">
+        <button type="button" class="btn btn-primary mr-2" (click)="accept($event)" *ngIf="problems[0].policemanId == ''">Accept</button>
         <button type="button" class="btn btn-secondary mr-2" (click)="saveReport($event)">Save report</button>
-        <button type="button" class="btn btn-danger" (click)="sendToCourt($event)">Send to court</button>
+        <button type="button" class="btn btn-danger" (click)="sendToCourt($event)" *ngIf="!problems[0].sent">Send to court</button>
       </div>
     </div>
   </div>
