@@ -46,7 +46,10 @@ export class JudgeHomeComponent implements OnInit {
   public getCommunalProblems(): void {
     this.judgeService.getJudgeCommunalProblems(this.user.id).subscribe({
       next: (response) => {
-        const data = response.filter((item: any) => item.hearing === true);
+        let data: any = null;
+        if (response.length > 2) {
+          data = response?.filter((item: any) => item.hearing === true);
+        }
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
         this.isLoading = false;
@@ -76,11 +79,11 @@ export class JudgeHomeComponent implements OnInit {
     this.dataSource.filter = value;
   }
 
-  public solve(id: any): void {
+  public solve(id: any, data: any): void {
     this.isLoading = true;
     this.judgeService.solve(id).subscribe({
       next: () => {
-        this.getCommunalProblems();
+        this.solveOnCommunalPolice(data);
       },
       error: () => {
         this.isLoading = false;
@@ -90,4 +93,16 @@ export class JudgeHomeComponent implements OnInit {
     this.errorMessage = '';
   }
 
+  public solveOnCommunalPolice(data: any): void {
+    this.judgeService.solveCommunalProblem(data).subscribe({
+      next: () => {
+        this.getCommunalProblems();
+      },
+      error: () => {
+        this.isLoading = false;
+        this.errorMessage = 'Error with solving this communal problem, please try again later.'; 
+      }
+    })
+    this.errorMessage = '';
+  }
 }

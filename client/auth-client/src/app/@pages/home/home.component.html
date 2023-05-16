@@ -42,7 +42,7 @@
 
                 <div id="container">    
                     
-                    <section class="communal-problem-section">
+                    <section class="communal-problem-section" *ngIf="listCommunalProblems.toString() != '[]'">
                         <div *ngFor="let problem of listCommunalProblems" >
                             <app-communal-problem-card [problem]="problem"></app-communal-problem-card>
                         </div>

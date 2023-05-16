@@ -48,6 +48,7 @@ export class JudgeCommunalProblemsDetailsComponent implements OnInit {
       userId: this.communalProblem.reportedById,
       communalProblem: this.communalProblem
     }
+    console.log(this.communalProblem.reportedById)
     this.dialog.open(JudgeCommunalProblemsHearingDialogComponent, dialogRef).afterClosed().subscribe((data) => {
       if(data) {
         this.isLoading = true;
