@@ -32,7 +32,6 @@ func ConnectToAuthDatabase() (*mongo.Client, error) {
 }
 
 func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.InsertOneResult, error) {
-	communalProblem.Id = uuid.New().String()
 
 	judges, err := GetAllJudges()
 	if err != nil {
@@ -51,9 +50,6 @@ func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.I
 		numCommunalProblemsPerJudge[problem.JudgeId]++
 	}
 
-	fmt.Println(judges)
-	fmt.Println(communalProblems)
-
 	minNumCommunalProblems := len(communalProblems)
 	minJudge := judges[0]
 	for _, judge := range judges {
@@ -64,7 +60,6 @@ func WriteIntoCommunalProblems(communalProblem *model.CommunalProblem) (*mongo.I
 	}
 
 	communalProblem.JudgeId = minJudge.Id
-	communalProblem.Accepted = nil
 
 	_, err = AddCommunalProblem(communalProblem)
 	if err != nil {
@@ -80,8 +75,6 @@ func AddCommunalProblem(communalProblem *model.CommunalProblem) (*mongo.InsertOn
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	defer cancel()
-
-	communalProblem.Id = uuid.New().String()
 
 	result, err := collection.InsertOne(ctx, communalProblem)
 	return result, err

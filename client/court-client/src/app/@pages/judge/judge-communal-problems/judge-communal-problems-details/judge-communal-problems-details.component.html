@@ -20,7 +20,7 @@
                         <mat-card-content class="mat-card__content" [ngClass]="{'space-top' : !communalProblem.imageUrl}">
                             <p class="mat-card__txt">{{ communalProblem.description }}</p>
                         </mat-card-content>
-                        <mat-card-actions class="mat-card__actions" *ngIf="communalProblem.accepted == null">
+                        <mat-card-actions class="mat-card__actions" *ngIf="communalProblem.accepted == false">
                           <button type="button" class="mat-card__btn mat-card__btn-primary" mat-button (click)="accept()">Accept</button>
                           <button type="button" class="mat-card__btn mat-card__btn-close" mat-button (click)="decline()">Decline</button>
                         </mat-card-actions>

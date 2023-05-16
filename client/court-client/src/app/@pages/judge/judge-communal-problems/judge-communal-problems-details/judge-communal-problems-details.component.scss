@@ -42,10 +42,9 @@
 }
 
 .mat-card__actions {
-  display: flex;
-  align-items: right;
-  justify-content: right;
-  padding-bottom: 20px !important;
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
 }
 
 .mat-card {

@@ -10,11 +10,11 @@
                         <span class="sr-only"></span>
                     </div>
                 </div>                
-                <div class="home__no-data" *ngIf="!isLoading && this.dataSource.data.toString() === '[]'">
+                <div class="home__no-data" *ngIf="!isLoading && this.dataSource.data == null">
                     <img class="home__no-data-img" src="../../../../assets/images/no-data.png" alt="">
                     <p class="home__no-data-txt">There is no communal problems assign to you at this moment, sit tight.</p>
                 </div>
-                <div class="home__table-wrapper" *ngIf="!isLoading && this.dataSource.data.toString() !== '[]'">
+                <div class="home__table-wrapper" *ngIf="!isLoading && this.dataSource.data != null">
                     <div class="home__table">
                         <h3 class="home__heading">Below, you can see unresolved communal issues that still need to be addressed. However, it is up to you to solve them, and you can do so by clicking the button located in the "solve" column. By taking this action, the communal problem will be resolved.</h3>
                         <div class="home__actions">
@@ -64,7 +64,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> SOLVE </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> 
                                     <ng-container *ngIf="!row.solved">
-                                        <a matTooltip="Solve this communal problem" (click)="solve(row.id)">
+                                        <a matTooltip="Solve this communal problem" (click)="solve(row.id, row)">
                                             <i class="bi bi-box-arrow-up-right"></i>
                                         </a> 
                                     </ng-container>
