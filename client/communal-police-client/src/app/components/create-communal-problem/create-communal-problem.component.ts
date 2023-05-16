@@ -93,7 +93,10 @@ export class CreateCommunalProblemComponent implements OnInit {
 
     if (this.communalProblema.anonymus){
       this.communalProblema.reportedById = ""
+    } else {
+      this.communalProblema.reportedById = this.id
     }
+
 
     this.service.createNew(this.communalProblema).subscribe(res => {
       console.log("Succesfull save")
