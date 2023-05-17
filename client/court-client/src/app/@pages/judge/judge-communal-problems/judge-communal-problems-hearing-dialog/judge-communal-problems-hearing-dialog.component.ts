@@ -39,15 +39,14 @@ export class JudgeCommunalProblemsHearingDialogComponent implements OnInit {
   public ngOnInit(): void {
     this.userId = this.data.userId;
     this.communalProblem = this.data.communalProblem;
-    if (!this.communalProblem.anonymous) {
+    if (this.communalProblem.reportedById) {
       this.getUserById();
     }
   }
 
   public getUserById(): void {
-    this.authService.getUserById(this.communalProblem.reportedById).subscribe((resp) => {
+    this.authService.getUserByJmbg(this.communalProblem.reportedById).subscribe((resp) => {
       this.user = resp;
-      console.log(this.user)
       this.hearingForm = this.formBuilder.group({
         email: [this.user.email, [Validators.required, Validators.email]],
         name: [this.user.firstName, [Validators.required]],
@@ -70,22 +69,55 @@ export class JudgeCommunalProblemsHearingDialogComponent implements OnInit {
 
   public submit(): void {
     this.isLoading = true;
-    
-    const request = {
-      "email": this.user.email,
-      "date": this.date
-    }
 
-    this.judgeService.accept(this.communalProblem.id, request).subscribe({
-      next: (resp) => {
+    if (this.communalProblem.anonymous) {
+      this.solve(this.communalProblem.id, this.communalProblem);
+    } else {
+      
+      const request = {
+        "email": this.user.email,
+        "date": this.date
+      }
+
+      this.judgeService.accept(this.communalProblem.id, request).subscribe({
+        next: (resp) => {
+          this.isLoading = false;
+          this.dialogRef.close(fetch);
+        },
+        error: () => {
+          this.errorMessage = 'Error accepting communal problem.';
+          this.isLoading = false;
+        }
+      });
+    }
+    this.errorMessage = '';
+  }
+
+  public solve(id: any, data: any): void {
+    this.isLoading = true;
+    this.judgeService.solve(id).subscribe({
+      next: () => {
+        this.solveOnCommunalPolice(data);
+      },
+      error: () => {
+        this.isLoading = false;
+        this.errorMessage = 'Error with solving this communal problem, please try again later.';
+      }
+    });
+    this.errorMessage = '';
+  }
+
+  public solveOnCommunalPolice(data: any): void {
+    this.judgeService.solveCommunalProblem(data).subscribe({
+      next: () => {
         this.isLoading = false;
         this.dialogRef.close(fetch);
       },
       error: () => {
-        this.errorMessage = 'Error accepting communal problem.';
         this.isLoading = false;
+        this.errorMessage = 'Error with solving this communal problem, please try again later.'; 
       }
-    });
+    })
     this.errorMessage = '';
   }
 }

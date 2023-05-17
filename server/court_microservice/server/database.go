@@ -152,6 +152,7 @@ func SolveCommunalProblem(id string) error {
 		bson.M{"id": id},
 		bson.D{
 			{"$set", bson.D{{"solved", true}}},
+			{"$set", bson.D{{"hearing", true}}},
 		},
 	)
 	if err != nil {

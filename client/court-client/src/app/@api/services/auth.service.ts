@@ -36,4 +36,8 @@ export class AuthService {
   public getUserById(id: string): Observable<any> {
     return this.httpClient.get(`${this.APIurl}/user/${id}`);
   }
+
+  public getUserByJmbg(jmbg: string): Observable<any> {
+    return this.httpClient.get(`${this.APIurl}/user-jmbg/${jmbg}`);
+  }
 }
