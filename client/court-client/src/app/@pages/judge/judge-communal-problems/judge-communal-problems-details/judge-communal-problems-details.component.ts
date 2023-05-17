@@ -35,8 +35,8 @@ export class JudgeCommunalProblemsDetailsComponent implements OnInit {
   public getCommunalProblem(): void {
     this.judgeService.getCommunalProblmeById(this.id).subscribe((resp) => {
       this.communalProblem = resp;
+      console.log(this.communalProblem)
       this.isLoading = false;
-      console.log(this.communalProblem);
     });
   }
 

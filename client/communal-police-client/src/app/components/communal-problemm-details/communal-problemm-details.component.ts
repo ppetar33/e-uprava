@@ -79,6 +79,7 @@ export class CommunalProblemmDetailsComponent implements OnInit {
 
   sendToCourt(event: Event){
     console.log(this.loaded);
+    console.log(this.problems[0])
     this.communalPoliceService.sendToCOurt(this.problems[0]).subscribe(res => {
       console.log("Succesfull send to court")
       this.communalPoliceService.sendToCourtCommunalPolice(this.problems[0]).subscribe(res => {

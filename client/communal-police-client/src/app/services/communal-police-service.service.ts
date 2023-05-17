@@ -107,7 +107,7 @@ export class CommunalPoliceServiceService {
 		{ headers: this.headers, responseType: 'json' });
 	}
 
-	sendToCOurt(communalProblem: CommunalProblem): Observable<any> {
+	sendToCOurt(communalProblem: any): Observable<any> {
 		let url = "http://localhost:8000/api/court/communal-problem"
 
 		return this.http.post(url,
@@ -118,7 +118,7 @@ export class CommunalPoliceServiceService {
 				address: communalProblem.address,
 				imageUrl: communalProblem.imageUrl,
         		policemanId: communalProblem.policemanId,
-        		anonymous: communalProblem.anonymus,
+        		anonymous: communalProblem.anonymous,
         		date: communalProblem.date,
         		municipality: communalProblem.municipality,
         		judgeId: communalProblem.judgeId,
