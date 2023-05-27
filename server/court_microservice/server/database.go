@@ -168,14 +168,25 @@ func DeclineCommunalProblem(id string, improvement *model.Improvement) error {
 
 	defer cancel()
 
-	_, err := collection.UpdateOne(
+	_, err := collection.DeleteOne(
 		ctx,
-		bson.M{"id": id},
-		bson.D{
-			{"$set", bson.D{{"accepted", false}}},
-			{"$set", bson.D{{"improvement", improvement.Text}}},
-		},
-	)
+		bson.M{"id": id})
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nil
+}
+
+func DeleteCommunalProblem(id string) error {
+	collection := client.Database("COURT").Collection("communalProblems")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	_, err := collection.DeleteOne(
+		ctx,
+		bson.M{"id": id})
 	if err != nil {
 		fmt.Println(err)
 	}

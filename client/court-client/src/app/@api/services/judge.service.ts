@@ -38,6 +38,10 @@ export class JudgeService {
     return this.httpClient.put(`${this.APIurl_communal_police}/improve-communal-problem`, data);
   }
 
+  public delete(id: any): Observable<any> {
+    return this.httpClient.delete(`${this.APIurl}/communal-problem/delete/${id}`);
+  }
+
   public solveCommunalProblem(data: any): Observable<any> {
     return this.httpClient.put(`${this.APIurl_communal_police}/solve`, data);
   }

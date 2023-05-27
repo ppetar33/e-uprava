@@ -28,15 +28,16 @@ func main() {
 
 	fmt.Println(server.NumberSessionsInProgress())
 
-	router.HandleFunc("/api/court/communal-problem", WriteCommunalProblem).Methods("POST")
-	router.HandleFunc("/api/court/communal-problem", GetCommunalProblems).Methods("GET")
-	router.HandleFunc("/api/court/communal-problem/id/{id}", GetCommunalProblemById).Methods("GET")
-	router.HandleFunc("/api/court/communal-problem/accept/{id}", AcceptCommunalProblem).Methods("PUT")
-	router.HandleFunc("/api/court/communal-problem/decline/{id}", DeclineCommunalProblem).Methods("PUT")
-	router.HandleFunc("/api/court/communal-problem/solve/{id}", SolveCommunalProblem).Methods("PUT")
-	router.HandleFunc("/api/court/communal-problem/judge/{id}", GetJudgeCommunalProblems).Methods("GET")
-	router.HandleFunc("/api/court/judge", WriteJudge).Methods("POST")
-	router.HandleFunc("/api/court/judge", GetJudges).Methods("GET")
+	router.Handle("/api/court/communal-problem", ValidateJWT(WriteCommunalProblem)).Methods("POST")
+	router.Handle("/api/court/communal-problem", ValidateJWT(GetCommunalProblems)).Methods("GET")
+	router.Handle("/api/court/communal-problem/delete/{id}", ValidateJWT(DeleteCommunalProblem)).Methods("DELETE")
+	router.Handle("/api/court/communal-problem/id/{id}", ValidateJWT(GetCommunalProblemById)).Methods("GET")
+	router.Handle("/api/court/communal-problem/accept/{id}", ValidateJWT(AcceptCommunalProblem)).Methods("PUT")
+	router.Handle("/api/court/communal-problem/decline/{id}", ValidateJWT(DeclineCommunalProblem)).Methods("PUT")
+	router.Handle("/api/court/communal-problem/solve/{id}", ValidateJWT(SolveCommunalProblem)).Methods("PUT")
+	router.Handle("/api/court/communal-problem/judge/{id}", ValidateJWT(GetJudgeCommunalProblems)).Methods("GET")
+	router.Handle("/api/court/judge", ValidateJWT(WriteJudge)).Methods("POST")
+	router.Handle("/api/court/judge", ValidateJWT(GetJudges)).Methods("GET")
 
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"*"}))
 
