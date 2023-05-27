@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/@api/services/auth.service';
 import { JudgeService } from 'src/app/@api/services/judge.service';
 
@@ -23,7 +24,8 @@ export class JudgeCommunalProblemsDeclineComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private judgeService: JudgeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { 
     this.declineForm = this.formBuilder.group({
       text: ["", [Validators.required]]
@@ -64,11 +66,26 @@ export class JudgeCommunalProblemsDeclineComponent implements OnInit {
       next: () => {
         this.isLoading = false;
         this.dialogRef.close(fetch);
+        this.router.navigate(['judge/problems']);
       },
       error: () => {
         this.errorMessage = 'Error declining communal problem.';
         this.isLoading = false;
       }
     }))
+  }
+
+  public deleteCommunalProblem(): void {
+    this.judgeService.delete(this.communalProblem.id).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.dialogRef.close(fetch);
+      },
+      error: () => {
+        this.errorMessage = 'Error deleting communal problem.';
+        this.isLoading = false;
+      }
+    });
+    this.errorMessage = '';
   }
 }

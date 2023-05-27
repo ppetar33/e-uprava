@@ -193,6 +193,39 @@ func DeclineCommunalProblem(response http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func DeleteCommunalProblem(response http.ResponseWriter, r *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+	contentType := r.Header.Get("Content-Type")
+	mediatype, _, errContentType := mime.ParseMediaType(contentType)
+
+	if errContentType != nil {
+		http.Error(response, errContentType.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if mediatype != "application/json" {
+		err := errors.New("expect application/json Content-Type")
+		http.Error(response, err.Error(), http.StatusUnsupportedMediaType)
+		return
+	}
+
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+	if !ok {
+		json.NewEncoder(response).Encode(`*** ID is missing in parameters ***`)
+		log.Println(r.RemoteAddr + " " + r.Method + " " + r.RequestURI + " " + strconv.Itoa(http.StatusBadRequest))
+		return
+	}
+
+	err := server.DeleteCommunalProblem(id)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	} else {
+		json.NewEncoder(response).Encode(`*** Successfully deleted ***`)
+	}
+}
+
 func GetJudgeCommunalProblems(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Content-Type", "application/json")
 
