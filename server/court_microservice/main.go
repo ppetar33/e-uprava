@@ -28,7 +28,7 @@ func main() {
 
 	fmt.Println(server.NumberSessionsInProgress())
 
-	router.Handle("/api/court/communal-problem", ValidateJWT(WriteCommunalProblem)).Methods("POST")
+	router.HandleFunc("/api/court/communal-problem", WriteCommunalProblem).Methods("POST")
 	router.Handle("/api/court/communal-problem", ValidateJWT(GetCommunalProblems)).Methods("GET")
 	router.Handle("/api/court/communal-problem/delete/{id}", ValidateJWT(DeleteCommunalProblem)).Methods("DELETE")
 	router.Handle("/api/court/communal-problem/id/{id}", ValidateJWT(GetCommunalProblemById)).Methods("GET")
