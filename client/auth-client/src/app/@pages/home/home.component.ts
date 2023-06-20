@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   private getAllCommunalProblems(): void {
     this.communalProblemService.getAll().subscribe(res => {
       this.listCommunalProblems = res;
+      console.log(res)
     })
   }
 
@@ -74,7 +75,7 @@ export class HomeComponent implements OnInit {
   }
 
   clickExportExcel(): void {
-    const filteredData = this.listCommunalProblems.map(({ id, imageUrl, reportedById, report, policemanId, judgeId, anonymous, accepted, sent, solved, improvement,...rest }) => rest);
+    const filteredData = this.listCommunalProblems.map(({ id, imageUrl, reportedById, report, policemanId, judgeId, anonymous, accepted, sent, solved, improvement, dateHearing, hearing,...rest }) => rest);
     this.openDataService.exportToExcel(filteredData, 'Communal-problems.xlsx');
   }
 
