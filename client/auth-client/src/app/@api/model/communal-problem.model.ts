@@ -15,4 +15,6 @@ export interface CommunalProblem {
     sent: boolean;
     solved: boolean;
     improvement: string;
+    hearing: string;
+    dateHearing: string;
 }
